@@ -42,7 +42,9 @@ creatorRouter.post("/login", async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
   console.log("Cookie has been set successfully");
-  res.send("Cookie setting successful");
+  res.json({
+    token,
+  });
 });
 
 creatorRouter.post("/signup", async (req, res) => {
