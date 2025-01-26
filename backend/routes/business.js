@@ -1,0 +1,72 @@
+const { Router } = require("express");
+const businessModel = require("../models/businessSchema");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const businessAuthMiddleware = require("../middleware/businessAuth");
+const z = require("zod");
+
+const businessRouter = Router();
+const saltRounds = 10;
+
+const userValidationSchema = z
+  .object({
+    username: z.string().min(2).max(30),
+    email: z.string().email(),
+    password: z.string().min(6).max(30),
+    confirmPassword: z.string().min(6).max(30),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Password is incorrect",
+    path: ["confirmPassword"],
+  });
+
+businessRouter.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  const user = await businessModel.findOne({ email: email });
+  console.log(user);
+  const result = bcrypt.compare(password, user.password);
+  if (!result) {
+    res.status(404).send("Invalid email or password");
+  }
+  console.log("Correct Password");
+  const token = jwt.sign(
+    {
+      userId: user._id,
+    },
+    process.env.JWT_BUSINESS_SECRET,
+    { expiresIn: "1d" }
+  );
+  console.log("Token: " + token);
+  res.cookie("token", token, {
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+  console.log("Cookie has been set successfully");
+  res.send("Cookie setting successful");
+});
+
+businessRouter.post("/signup", async (req, res) => {
+  const validation = userValidationSchema.safeParse(req.body);
+  if (!validation.success) {
+    console.log(validation.error);
+    res.send("error during validation");
+  }
+  const { username, email, password, confirmPassword } = req.body;
+  const salt = await bcrypt.genSalt(saltRounds);
+  const hashedPassword = await bcrypt.hash(password, salt);
+  const user = await businessModel.create({
+    username,
+    email,
+    password: hashedPassword,
+  });
+  console.log(user);
+  res.send({
+    message: "User successfully created",
+    user: user,
+  });
+});
+
+businessRouter.get("/verified", businessAuthMiddleware, (req, res) => {
+  res.send("You are verified");
+});
+
+module.exports = businessRouter;
