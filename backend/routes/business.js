@@ -85,5 +85,12 @@ businessRouter.post("/dashboard/upload",businessAuthMiddleware, async (req, res)
   console.log(newJob);
   res.json({newJob,message:{message:"Job has been uploaded successfully"}});
 });
-
+businessRouter.get("/dashboard/jobs", businessAuthMiddleware,(req, res) => {
+  const jobs = jobModel.find({});
+  res.json(jobs);
+});
+businessRouter.get("/dashboard/posts/view", businessAuthMiddleware, async (req, res) => {
+  const posts = await creatorPostModel.find({});
+  res.json(posts);
+})
 module.exports = businessRouter;

@@ -79,15 +79,12 @@ creatorRouter.post("/signup", async (req, res) => {
 creatorRouter.get("/verified", creatorAuthMiddleware, (req, res) => {
   res.send("You are verified");
 });
-creatorRouter.get("/dashboard/jobs", (req, res) => {
+creatorRouter.get("/dashboard/jobs",creatorAuthMiddleware, (req, res) => {
   const jobs = jobModel.find({});
   res.json(jobs);
 });
 
-creatorRouter.post(
-  "/dashboard/posts/upload",
-  creatorAuthMiddleware,
-  async (req, res) => {
+creatorRouter.post("/dashboard/posts/upload", creatorAuthMiddleware, async (req, res) => {
     const { title, description } = req.body;
     const userId = req.userId;
     const post = await creatorPostModel.create({
@@ -98,5 +95,8 @@ creatorRouter.post(
     res.json(post);
   }
 );
-
+creatorRouter.get("/dashboard/posts/view", creatorAuthMiddleware, async (req, res) => {
+  const posts = await creatorPostModel.find({});
+  res.json(posts);
+})
 module.exports = creatorRouter;
