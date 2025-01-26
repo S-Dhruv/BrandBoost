@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const creatorAuthMiddleware = require("../middleware/creatorAuth");
 const z = require("zod");
+const jobModel = require("../models/jobSchema");
+const creatorPostModel = require("../models/creatorPostSchema");
 
 const creatorRouter = Router();
 const saltRounds = 10;
@@ -22,31 +24,32 @@ const userValidationSchema = z
   });
 
 creatorRouter.post("/login", async (req, res) => {
-  try{
+  try {
     const { email, password } = req.body;
-  const user = await creatorModel.findOne({ email: email });
-  console.log(user);
-  const result = bcrypt.compare(password, user.password);
-  if (!result) {
-    res.status(404).send("Invalid email or password");
-  }
-  console.log("Correct Password");
-  const token = jwt.sign(
-    {
-      userId: user._id,
-      role:"creator"
-    },
-    process.env.JWT_CREATOR_SECRET,
-    { expiresIn: "1d" }
-  );
-  console.log("Token: " + token);
-  res.cookie("token", token, {
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  });
-  res.status(200).json({token,message:"Login successful",role:"creator"});
-  console.log("Cookie has been set successfully");
-  }
-  catch(err){
+    const user = await creatorModel.findOne({ email: email });
+    console.log(user);
+    const result = bcrypt.compare(password, user.password);
+    if (!result) {
+      res.status(404).send("Invalid email or password");
+    }
+    console.log("Correct Password");
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        role: "creator",
+      },
+      process.env.JWT_CREATOR_SECRET,
+      { expiresIn: "1d" }
+    );
+    console.log("Token: " + token);
+    res.cookie("token", token, {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    res
+      .status(200)
+      .json({ token, message: "Login successful", role: "creator" });
+    console.log("Cookie has been set successfully");
+  } catch (err) {
     console.log(err);
   }
 });
@@ -76,8 +79,24 @@ creatorRouter.post("/signup", async (req, res) => {
 creatorRouter.get("/verified", creatorAuthMiddleware, (req, res) => {
   res.send("You are verified");
 });
-creatorRouter.get("/dashboard/job",(req,res) =>{
+creatorRouter.get("/dashboard/jobs", (req, res) => {
   const jobs = jobModel.find({});
   res.json(jobs);
-})
+});
+
+creatorRouter.post(
+  "/dashboard/posts/upload",
+  creatorAuthMiddleware,
+  async (req, res) => {
+    const { title, description } = req.body;
+    const userId = req.userId;
+    const post = await creatorPostModel.create({
+      title,
+      description,
+      creatorId: userId,
+    });
+    res.json(post);
+  }
+);
+
 module.exports = creatorRouter;

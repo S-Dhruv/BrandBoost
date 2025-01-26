@@ -5,7 +5,7 @@ const creatorAuthMiddleware = (req, res, next) => {
     const token = req.cookies.token;
     const decoded = jwt.verify(token, process.env.JWT_CREATOR_SECRET);
     if (decoded) {
-      req.userId = decoded.id;
+      req.userId = decoded.userId;
       next();
     } else {
       res.status(403).json({
