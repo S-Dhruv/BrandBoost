@@ -1,8 +1,8 @@
 import React from 'react'
-
+import CreatorSidebar from './CreatorSidebar';
 const CreatorDashboard = () => {
   return (
-    <div>CreatorDashboard</div>
+        <CreatorSidebar />
   )
 }
 
