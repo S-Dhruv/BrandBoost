@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const creatorModel = require("../models/businessSchema");
+const creatorModel = require("../models/creatorSchema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const creatorAuthMiddleware = require("../middleware/creatorAuth");
@@ -22,7 +22,8 @@ const userValidationSchema = z
   });
 
 creatorRouter.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  try{
+    const { email, password } = req.body;
   const user = await creatorModel.findOne({ email: email });
   console.log(user);
   const result = bcrypt.compare(password, user.password);
@@ -33,6 +34,7 @@ creatorRouter.post("/login", async (req, res) => {
   const token = jwt.sign(
     {
       userId: user._id,
+      role:"creator"
     },
     process.env.JWT_CREATOR_SECRET,
     { expiresIn: "1d" }
@@ -41,10 +43,12 @@ creatorRouter.post("/login", async (req, res) => {
   res.cookie("token", token, {
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
+  res.status(200).json({token,message:"Login successful",role:"creator"});
   console.log("Cookie has been set successfully");
-  res.json({
-    token,
-  });
+  }
+  catch(err){
+    console.log(err);
+  }
 });
 
 creatorRouter.post("/signup", async (req, res) => {
@@ -72,5 +76,8 @@ creatorRouter.post("/signup", async (req, res) => {
 creatorRouter.get("/verified", creatorAuthMiddleware, (req, res) => {
   res.send("You are verified");
 });
-
+creatorRouter.get("/dashboard/job",(req,res) =>{
+  const jobs = jobModel.find({});
+  res.json(jobs);
+})
 module.exports = creatorRouter;

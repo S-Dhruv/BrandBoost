@@ -5,7 +5,8 @@ const businessAuthMiddleware = (req, res, next) => {
     const token = req.cookies.token;
     const decoded = jwt.verify(token, process.env.JWT_BUSINESS_SECRET);
     if (decoded) {
-      req.userId = decoded.id;
+      req.userId = decoded.userId;
+      console.log(req.userId);
       next();
     } else {
       res.status(403).json({

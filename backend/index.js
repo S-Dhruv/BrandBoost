@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const z = require("zod");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-
+const cors = require("cors");
 const creatorRouter = require("./routes/creator");
 const businessRouter = require("./routes/business");
 
@@ -16,10 +16,13 @@ const creatorModel = require("./models/creatorSchema");
 const creatorAuthMiddleware = require("./middleware/creatorAuth");
 const businessAuthMiddleware = require("./middleware/businessAuth");
 
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true, 
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
 app.use("/business", businessRouter);
 app.use("/creator", creatorRouter);
 
