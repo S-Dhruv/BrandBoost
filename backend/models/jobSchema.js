@@ -5,24 +5,22 @@ const jobModel = mongoose.Schema({
     type: String,
     required: true,
   },
-  description:{
-    type:String,
-    required:true
+  description: {
+    type: String,
+    required: true,
   },
-  creatorId:{
+  creatorId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref:"business",
-    required:true
+    ref: "Business",
+    required: true,
   },
-  appliedCandidates:[
-   {
-    type: mongoose.Schema.Types.ObjectId,
-    ref:"creator",
-    required:true
-   }     
-  ]
-
-  
+  appliedCandidates: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Creator",
+      required: true,
+    },
+  ],
 });
 
-module.exports = mongoose.model("job", jobModel);
+module.exports = mongoose.model("Job", jobModel);

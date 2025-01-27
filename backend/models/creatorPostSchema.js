@@ -11,9 +11,9 @@ const creatorPostModel = mongoose.Schema({
   },
   creatorId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "creator",
+    ref: "Creator",
     required: true,
   },
 });
 
-module.exports = mongoose.model("creatorPost", creatorPostModel);
+module.exports = mongoose.model("CreatorPost", creatorPostModel);

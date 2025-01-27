@@ -42,7 +42,7 @@ businessRouter.post("/login", async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
   console.log("Cookie has been set successfully");
-  res.json({token,message:"Login successful",role:"business"})
+  res.json({ token, message: "Login successful", role: "business" });
 });
 
 businessRouter.post("/signup", async (req, res) => {
@@ -51,7 +51,7 @@ businessRouter.post("/signup", async (req, res) => {
     console.log(validation.error);
     res.send("error during validation");
   }
-  const { username, email, password, confirmPassword,phone } = req.body;
+  const { username, email, password, confirmPassword, phone } = req.body;
   const salt = await bcrypt.genSalt(saltRounds);
   const hashedPassword = await bcrypt.hash(password, salt);
   const user = await businessModel.create({
@@ -71,26 +71,42 @@ businessRouter.get("/verified", businessAuthMiddleware, (req, res) => {
   res.send("You are verified");
 });
 
-businessRouter.post("/dashboard/upload",businessAuthMiddleware, async (req, res) => {
-  let candidate = [];
-  const {title,description} =req.body;
-  candidate.push(`67965f0752f3723652c33ea2`);
-  console.log(req.userId);
-  const newJob = await jobModel.create({
-    title,
-    description,
-    creatorId:req.userId,
-    candidate,
-  });
-  console.log(newJob);
-  res.json({newJob,message:{message:"Job has been uploaded successfully"}});
-});
-businessRouter.get("/dashboard/jobs", businessAuthMiddleware,(req, res) => {
-  const jobs = jobModel.find({});
-  res.json(jobs);
-});
-businessRouter.get("/dashboard/posts/view", businessAuthMiddleware, async (req, res) => {
-  const posts = await creatorPostModel.find({});
-  res.json(posts);
-})
+businessRouter.post(
+  "/dashboard/upload",
+  businessAuthMiddleware,
+  async (req, res) => {
+    let candidate = [];
+    const { title, description } = req.body;
+    candidate.push(`67965f0752f3723652c33ea2`);
+    console.log(req.userId);
+    const newJob = await jobModel.create({
+      title,
+      description,
+      creatorId: req.userId,
+      candidate,
+    });
+    console.log(newJob);
+    res.json({
+      newJob,
+      message: { message: "Job has been uploaded successfully" },
+    });
+  }
+);
+businessRouter.get(
+  "/dashboard/jobs",
+  businessAuthMiddleware,
+  async (req, res) => {
+    const jobs = await jobModel.find({}).populate("creatorId", "username");
+    console.log(jobs);
+    res.json(jobs);
+  }
+);
+businessRouter.get(
+  "/dashboard/posts/view",
+  businessAuthMiddleware,
+  async (req, res) => {
+    const posts = await creatorPostModel.find({});
+    res.json(posts);
+  }
+);
 module.exports = businessRouter;

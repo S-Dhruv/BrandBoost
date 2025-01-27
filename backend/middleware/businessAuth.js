@@ -2,7 +2,14 @@ const jwt = require("jsonwebtoken");
 
 const businessAuthMiddleware = (req, res, next) => {
   try {
-    const token = req.cookies.token;
+    console.log("stuck in auth");
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(403).json({
+        message: "JWT token must be provided",
+      });
+    }
+    const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_BUSINESS_SECRET);
     if (decoded) {
       req.userId = decoded.userId;

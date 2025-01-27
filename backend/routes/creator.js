@@ -55,36 +55,47 @@ creatorRouter.post("/login", async (req, res) => {
 });
 
 creatorRouter.post("/signup", async (req, res) => {
-  const validation = userValidationSchema.safeParse(req.body);
-  if (!validation.success) {
-    console.log(validation.error);
-    res.send("error during validation");
+  try {
+    const validation = userValidationSchema.safeParse(req.body);
+    if (!validation.success) {
+      console.log(validation.error);
+      res.send("error during validation");
+    }
+    const { username, email, phone, password } = req.body;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const user = await creatorModel.create({
+      username,
+      email,
+      phone,
+      password: hashedPassword,
+    });
+    console.log(user);
+    res.send({
+      message: "User successfully created",
+      user: user,
+    });
+  } catch (err) {
+    console.log(err);
   }
-  const { username, email, phone, password } = req.body;
-  const salt = await bcrypt.genSalt(saltRounds);
-  const hashedPassword = await bcrypt.hash(password, salt);
-  const user = await creatorModel.create({
-    username,
-    email,
-    phone,
-    password: hashedPassword,
-  });
-  console.log(user);
-  res.send({
-    message: "User successfully created",
-    user: user,
-  });
 });
 
 creatorRouter.get("/verified", creatorAuthMiddleware, (req, res) => {
   res.send("You are verified");
 });
-creatorRouter.get("/dashboard/jobs",creatorAuthMiddleware, (req, res) => {
-  const jobs = jobModel.find({});
-  res.json(jobs);
-});
+creatorRouter.get(
+  "/dashboard/jobs",
+  creatorAuthMiddleware,
+  async (req, res) => {
+    const jobs = await jobModel.find({}).populate("creatorId", "username");
+    res.json(jobs);
+  }
+);
 
-creatorRouter.post("/dashboard/posts/upload", creatorAuthMiddleware, async (req, res) => {
+creatorRouter.post(
+  "/dashboard/posts/upload",
+  creatorAuthMiddleware,
+  async (req, res) => {
     const { title, description } = req.body;
     const userId = req.userId;
     const post = await creatorPostModel.create({
@@ -95,8 +106,29 @@ creatorRouter.post("/dashboard/posts/upload", creatorAuthMiddleware, async (req,
     res.json(post);
   }
 );
-creatorRouter.get("/dashboard/posts/view", creatorAuthMiddleware, async (req, res) => {
-  const posts = await creatorPostModel.find({});
-  res.json(posts);
-})
+creatorRouter.get(
+  "/dashboard/posts/view",
+  creatorAuthMiddleware,
+  async (req, res) => {
+    const posts = await creatorPostModel.find({});
+    res.json(posts);
+  }
+);
+
+creatorRouter.post(
+  "/dashboard/jobs/apply/:jobId",
+  creatorAuthMiddleware,
+  async (req, res) => {
+    const jobId = req.params.jobId;
+    const userId = req.userId;
+    const job = await jobModel.findById(jobId);
+    if (!job) return res.status(404).json("Job not found");
+    if (job.appliedCandidates.includes(userId))
+      return res.status(404).json("You have already applied for this job");
+    job.appliedCandidates.push(userId);
+    await job.save();
+    res.json("Successfully applied for the job");
+  }
+);
+
 module.exports = creatorRouter;
