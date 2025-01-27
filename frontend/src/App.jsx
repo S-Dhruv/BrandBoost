@@ -34,7 +34,7 @@ function App() {
     <Router>
       <Routes>
         ({userType === "creator"})?(
-          <Route path="/creator/signup" element={<Login />} />
+          
           <Route path="/creator/signup" element={<CreatorSignup />} />
           <Route path="/creator/login" element={<CreatorLogin />} />
           <Route path="/" element={<LandingPage />} />

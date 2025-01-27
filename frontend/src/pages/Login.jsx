@@ -2,15 +2,12 @@ import React from "react";
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaBriefcase, FaUserAstronaut } from 'react-icons/fa';
-import ResponsiveAppBar from '../components/ResponsiveAppBar';  
 
 const Login = () => {
   const navigate = useNavigate();
-
   const handleBusinessLogin = () => {
     navigate('/business/login');
   };
-
   const handleCreatorLogin = () => {
     navigate('/creator/login');
   };
@@ -18,9 +15,6 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       {/* App Bar */}
-      
-      <ResponsiveAppBar className="fixed top-0 left-0 w-full z-10"/>
-      
 
       {/* Design Elements */}
       <div className="absolute inset-0 overflow-hidden">

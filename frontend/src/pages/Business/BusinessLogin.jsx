@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ModernNavbar from '../../components/ModernNavbar';
 
 const BusinessLogin = () => {
   const emailRef = useRef(null);
@@ -32,6 +33,8 @@ const BusinessLogin = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       {/* Background Elements */}
+      <ModernNavbar/>
+
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -right-24 -top-24 w-96 h-96 bg-[#FFC971]/10 rounded-full blur-3xl"></div>
         <div className="absolute -left-24 -bottom-24 w-96 h-96 bg-[#CC5803]/10 rounded-full blur-3xl"></div>
