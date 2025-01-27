@@ -1,4 +1,5 @@
 import './App.css'
+import LandingPage from "./pages/LandingPage";
 import CreatorSignup from "./pages/Creator/CreatorSignUp";
 import CreatorLogin from "./pages/Creator/CreatorLogin";
 import CreatorDashboard from "./pages/Creator/CreatorDashboard";
@@ -10,7 +11,7 @@ import BusinessJobs from "./pages/Business/Jobs";
 import BusinessRequests from "./pages/Business/Requests"; 
 import BusinessOngoing from "./pages/Business/Ongoing"; 
 import BusinessPosts from "./pages/Business/Posts"; 
-
+import theme from "./theme"; 
 import CreatorJobs from "./pages/Creator/Jobs"; 
 import CreatorRequests from "./pages/Creator/Requests"; 
 import CreatorOngoing from "./pages/Creator/Ongoing"; 
@@ -34,6 +35,7 @@ function App() {
         ({userType === "creator"})?(
           <Route path="/creator/signup" element={<CreatorSignup />} />
           <Route path="/creator/login" element={<CreatorLogin />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/creator/dashboard" element={
             <ProtectedRoute1>
             <CreatorDashboard />
