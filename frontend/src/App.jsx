@@ -1,5 +1,6 @@
 import './App.css'
 import LandingPage from "./pages/LandingPage";
+import Login from "./pages/Login";
 import CreatorSignup from "./pages/Creator/CreatorSignUp";
 import CreatorLogin from "./pages/Creator/CreatorLogin";
 import CreatorDashboard from "./pages/Creator/CreatorDashboard";
@@ -33,9 +34,11 @@ function App() {
     <Router>
       <Routes>
         ({userType === "creator"})?(
+          <Route path="/creator/signup" element={<Login />} />
           <Route path="/creator/signup" element={<CreatorSignup />} />
           <Route path="/creator/login" element={<CreatorLogin />} />
           <Route path="/" element={<LandingPage />} />
+          <Route path="/pages/login" element={<Login />} />
           <Route path="/creator/dashboard" element={
             <ProtectedRoute1>
             <CreatorDashboard />

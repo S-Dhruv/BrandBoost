@@ -30,45 +30,55 @@ const CreatorLogin = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#CC5803] via-[#E2711D] to-[#FF9505] p-4">
-      <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
-        <h2 className="text-3xl font-bold text-center text-[#CC5803] mb-8">Creator Login</h2>
-        
-        <form onSubmit={handleLogin} className="space-y-6">
-          <div className="space-y-4">
-            <input
-              type="email"
-              name="mail"
-              ref={emailRef}
-              placeholder="Email"
-              className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:outline-none focus:border-[#FF9505] focus:ring-2 focus:ring-[#FF9505]/20 transition-all"
-              required
-            />
-            
-            <input
-              type="password"
-              name="pass"
-              ref={passRef}
-              placeholder="Password"
-              className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:outline-none focus:border-[#FF9505] focus:ring-2 focus:ring-[#FF9505]/20 transition-all"
-              required
-            />
-          </div>
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -right-24 -top-24 w-96 h-96 bg-[#FFC971]/10 rounded-full blur-3xl"></div>
+        <div className="absolute -left-24 -bottom-24 w-96 h-96 bg-[#CC5803]/10 rounded-full blur-3xl"></div>
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#E2711D]/10 rounded-full blur-3xl"></div>
+      </div>
 
-          <button
-            type="submit"
-            className="w-full bg-[#FF9505] hover:bg-[#FFB627] text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200"
-          >
-            Login
-          </button>
-        </form>
+      {/* Content */}
+      <div className="relative z-10 w-full max-w-md px-4">
+        <div className="bg-white/80 backdrop-blur-lg p-8 rounded-2xl shadow-2xl">
+          <h2 className="text-3xl font-bold text-center text-[#CC5803] mb-8">Creator Login</h2>
+          
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="space-y-4">
+              <input
+                type="email"
+                name="mail"
+                ref={emailRef}
+                placeholder="Email"
+                className="w-full px-4 py-3 rounded-xl bg-white/50 backdrop-blur-md border border-gray-200 focus:outline-none focus:border-[#FF9505] focus:ring-2 focus:ring-[#FF9505]/20 transition-all"
+                required
+              />
+              
+              <input
+                type="password"
+                name="pass"
+                ref={passRef}
+                placeholder="Password"
+                className="w-full px-4 py-3 rounded-xl bg-white/50 backdrop-blur-md border border-gray-200 focus:outline-none focus:border-[#FF9505] focus:ring-2 focus:ring-[#FF9505]/20 transition-all"
+                required
+              />
+            </div>
 
-        <p className="mt-6 text-center text-gray-600">
-          Don't have an account?{' '}
-          <a href="/creator/signup" className="text-[#FF9505] hover:text-[#FFB627] font-medium">
-            Sign up
-          </a>
-        </p>
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-[#FF9505] to-[#FFB627] hover:from-[#FFB627] hover:to-[#FFC971] text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#FF9505]/20"
+            >
+              Login
+            </button>
+          </form>
+
+          <p className="mt-6 text-center text-gray-600">
+            Don't have an account?{' '}
+            <a href="/creator/signup" className="text-[#FF9505] hover:text-[#FFB627] font-medium transition-colors">
+              Sign up
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
