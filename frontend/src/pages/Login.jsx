@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaBriefcase, FaUserAstronaut } from 'react-icons/fa';
+import ModernNavbar from '../components/ModernNavbar';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       {/* App Bar */}
-
+      <ModernNavbar/>
       {/* Design Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -right-24 -top-24 w-96 h-96 bg-[#FFC971]/10 rounded-full blur-3xl"></div>

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Menu, X, Search, Bell, User } from 'lucide-react';
+import logo from '../assets/logo.png'; // Correctly importing the logo
 
 const navigation = [
-  { name: 'Marketplace', href: '#' },
-  { name: 'Content Library', href: '#' },
+  { name: 'Jobs', href: '#' },
+  { name: 'posts', href: '#' },
   { name: 'Creators', href: '#' },
   { name: 'Resources', href: '#' }
 ];
@@ -18,19 +19,20 @@ const ModernNavbar = () => {
         <div className="flex justify-between h-16">
           {/* Logo and Brand */}
           <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center">
-              <div className="h-10 w-10">
-                <img 
-                  src="src=/assets/logo.png.webp"
-                  alt="Rocket Logo"
-                  className="h-full w-full object-contain"
-                />
-              </div>
-              <span className="ml-2 text-xl font-bold bg-gradient-to-r from-[#CC5803] to-[#FF9505] bg-clip-text text-transparent">
-                BrandBoost
-              </span>
-            </div>
-          </div>
+  <div className="flex-shrink-0 flex items-center">
+    <div className="h-12 w-12 rounded-full bg-gradient-to-r from-[#FF9505] to-[#CC5803] p-1 shadow-md hover:shadow-lg transition-transform transform hover:scale-105">
+      <img
+        src={logo} // Using the imported logo
+        alt="BrandBoost Logo"
+        className="h-full w-full object-contain rounded-full bg-white p-1"
+      />
+    </div>
+    <span className="ml-3 text-xl font-bold bg-gradient-to-r from-[#CC5803] to-[#FF9505] bg-clip-text text-transparent">
+      BrandBoost
+    </span>
+  </div>
+</div>
+
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-4">
@@ -55,7 +57,7 @@ const ModernNavbar = () => {
                 {item.name}
               </a>
             ))}
-            
+
             {/* Notifications */}
             <button className="p-2 text-gray-600 hover:text-[#CC5803] rounded-full hover:bg-orange-50">
               <Bell className="h-5 w-5" />
@@ -146,7 +148,7 @@ const ModernNavbar = () => {
                 {item.name}
               </a>
             ))}
-            
+
             <div className="border-t border-gray-200 pt-4">
               <a
                 href="/login"
