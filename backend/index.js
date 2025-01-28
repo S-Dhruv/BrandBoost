@@ -79,9 +79,8 @@ io.use(async (socket, next) => {
     }
 
     socket.userId = decoded.userId;
-    socket.username = user.username;
-    
-    console.log(`User connected: ${user.username} (${socket.userType})`);
+    const creatorName = await creatorModel.findById(decoded.userId);
+    socket.username = creatorName.username 
     next();
   } catch (err) {
     console.error("Socket authentication error:", err);
@@ -95,21 +94,7 @@ io.on("connection", (socket) => {
   socket.on("join-room", async ({ room }) => {
     try {
       if (!room) throw new Error("Room code is required");
-
-      if (socket.userType === 'business') {
-        const job = await jobModel.findOne({ 
-          roomCode: room,
-          creatorId: socket.userId 
-        });
-        if (!job) throw new Error("Unauthorized: Not your job room");
-      } else if (socket.userType === 'creator') {
-        const job = await jobModel.findOne({ 
-          roomCode: room,
-          appliedCandidates: socket.userId 
-        });
-        if (!job) throw new Error("Unauthorized: Not an applied candidate");
-      }
-
+      
       if (!rooms[room]) {
         rooms[room] = {
           messages: [],
@@ -142,24 +127,11 @@ io.on("connection", (socket) => {
   socket.on("send-message", ({ room, message }) => {
     try {
       if (!room || !message) throw new Error("Room and message are required");
-
-      if (!socket.rooms.has(room)) {
-        throw new Error("Not in room");
-      }
-
-      const messageObj = {
-        sender: socket.username,
-        content: message,
-        userType: socket.userType,
-        timestamp: new Date().toISOString()
-      };
-
-      if (rooms[room]) {
-        rooms[room].messages.push(messageObj);
-      }
-
-      io.to(room).emit("new-message", messageObj);
-
+      
+      io.to(room).emit("send-message", { 
+        message, 
+        username: socket.username 
+      });
       console.log(`Message from ${socket.username} in room ${room}: ${message}`);
     } catch (error) {
       console.error("Error sending message:", error);
@@ -218,6 +190,10 @@ io.on("connection", (socket) => {
     });
   });
 });
+
+
+
+
 async function main() {
   await mongoose.connect(process.env.MONGO_URL);
   console.log("Successfully connected to the database");
