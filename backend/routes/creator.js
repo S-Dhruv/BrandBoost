@@ -6,10 +6,10 @@ const creatorAuthMiddleware = require("../middleware/creatorAuth");
 const z = require("zod");
 const jobModel = require("../models/jobSchema");
 const creatorPostModel = require("../models/creatorPostSchema");
-
+const shortid = require("shortid");
+const rooms = require("../index")
 const creatorRouter = Router();
 const saltRounds = 10;
-
 const userValidationSchema = z
   .object({
     username: z.string().min(2).max(30),
@@ -130,5 +130,30 @@ creatorRouter.post(
     res.json("Successfully applied for the job");
   }
 );
-
+creatorRouter.get("/dashboard/ongoing/room/create",creatorAuthMiddleware,async(req,res)=>{
+  try{
+    const roomCode = shortid(6);
+    rooms[roomCode] = [];
+    rooms[roomCode].push(req.username);
+    console.log(roomCode)
+    res.status(200).json({roomCode});
+  }
+  catch(err){
+    console.log(err);
+  }
+})
+creatorRouter.post("/dashboard/ongoing/room/join",creatorAuthMiddleware,async(req,res)=>{
+  try{
+    const roomCode = req.body.roomCode;
+    console.log(rooms);
+    if(!rooms[roomCode]){
+      return res.status(404).json("Room not found");
+    }
+    rooms[roomCode].push(req.username);
+    res.status(200).json("Successfully joined room");
+  }
+  catch(err){
+    console.log(err);
+  }
+})
 module.exports = creatorRouter;

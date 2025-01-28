@@ -16,6 +16,8 @@ import CreatorJobs from "./pages/Creator/Jobs";
 import CreatorRequests from "./pages/Creator/Requests";
 import CreatorOngoing from "./pages/Creator/Ongoing";
 import CreatorPosts from "./pages/Creator/Posts";
+import CreatorOngoingChat from "./pages/Creator/CreatorOngoingChat";
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -80,6 +82,14 @@ function App() {
             element={
               <ProtectedRoute1>
                 <CreatorOngoing />
+              </ProtectedRoute1>
+            }
+          />
+          <Route
+            path="/creator/dashboard/ongoing/chat"
+            element={
+              <ProtectedRoute1>
+                <CreatorOngoingChat />
               </ProtectedRoute1>
             }
           />
