@@ -16,14 +16,14 @@ import CreatorJobs from "./pages/Creator/Jobs";
 import CreatorRequests from "./pages/Creator/Requests";
 import CreatorOngoing from "./pages/Creator/Ongoing";
 import CreatorPosts from "./pages/Creator/Posts";
-import CreatorOngoingChat from "./pages/Creator/CreatorOngoingChat";
-
+import BusinessWorkspace from "./pages/Business/BusinessWorkspace.jsx"
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
+import CreatorWorkspace from "./pages/Creator/CreatorWorkspace.jsx";
 function App() {
   const [isLogin, setIsLogin] = useState(
     localStorage.getItem("isLogin") === "true"
@@ -86,10 +86,10 @@ function App() {
             }
           />
           <Route
-            path="/creator/dashboard/ongoing/chat"
+            path="/creator/dashboard/ongoing/workspace"
             element={
               <ProtectedRoute1>
-                <CreatorOngoingChat />
+                <CreatorWorkspace />
               </ProtectedRoute1>
             }
           />
@@ -137,6 +137,15 @@ function App() {
               </ProtectedRoute2>
             }
           />
+          <Route
+            path="/business/dashboard/ongoing/workspace"
+            element={
+              <ProtectedRoute2>
+                <BusinessWorkspace />
+              </ProtectedRoute2>
+            }
+          />
+          
           <Route
             path="/business/dashboard/post"
             element={

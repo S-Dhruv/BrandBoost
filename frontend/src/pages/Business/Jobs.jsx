@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { SocketContext } from "../../util/SocketProvider";
+import shortId from "shortid"; 
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -26,7 +28,6 @@ const Jobs = () => {
         setJobs(data);
       } catch (err) {
         console.log(err);
-      } finally {
       }
     };
     fetchJobs();
@@ -35,6 +36,7 @@ const Jobs = () => {
   const handleJobSubmit = async (e) => {
     e.preventDefault();
     try {
+      const roomCode = shortId.generate();
       const response = await fetch(
         "http://localhost:3000/business/dashboard/upload",
         {
@@ -43,13 +45,18 @@ const Jobs = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: JSON.stringify({ title, description }),
+          body: JSON.stringify({ title, description, roomCode }),
         }
       );
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
+
       alert("Job Posted Successfully");
-      window.location.reload();
+
+      setJobs((prevJobs) => [...prevJobs, { ...data, roomCode }]);
+
+      setTitle("");
+      setDescription("");
     } catch (err) {
       console.log(err);
     }
@@ -62,7 +69,7 @@ const Jobs = () => {
       <h2>Post a Job</h2>
       <form onSubmit={handleJobSubmit}>
         <div>
-          <label for="title">Title:</label>
+          <label htmlFor="title">Title:</label>
           <input
             type="text"
             id="title"
@@ -73,7 +80,7 @@ const Jobs = () => {
           />
         </div>
         <div>
-          <label for="description">Description:</label>
+          <label htmlFor="description">Description:</label>
           <textarea
             name="description"
             onChange={(e) => setDescription(e.target.value)}
@@ -83,12 +90,14 @@ const Jobs = () => {
         </div>
         <button type="submit"> Create Job </button>
       </form>
+
       <h1>All jobs</h1>
       {jobs.map((job) => (
         <div key={job._id}>
           <h2>{job.title}</h2>
           <p>{job.description}</p>
-          <p>Posted By : {job.creatorId.username || "Anonymous"}</p>
+          <p>Room Code: {job.roomCode}</p>
+          <p>Posted By: {job.creatorId?.username || "Anonymous"}</p>
         </div>
       ))}
     </>

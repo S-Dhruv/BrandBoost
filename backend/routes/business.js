@@ -78,7 +78,7 @@ businessRouter.post(
   businessAuthMiddleware,
   async (req, res) => {
     let candidate = [];
-    const { title, description } = req.body;
+    const { title, description,roomCode } = req.body;
     candidate.push(`67965f0752f3723652c33ea2`);
     console.log(req.userId);
     const newJob = await jobModel.create({
@@ -86,6 +86,7 @@ businessRouter.post(
       description,
       creatorId: req.userId,
       candidate,
+      roomCode,
     });
     console.log(newJob);
     res.json({
@@ -142,13 +143,6 @@ businessRouter.get("/dashboard/requests/:jobId", businessAuthMiddleware, async (
     res.status(500).json({ error: err.message });
   }
 });
-businessRouter.get("/dashboard/requests/:jobId/approve",businessAuthMiddleware,async(req,res)=>{
-  try{
-    const jobId=req.params.jobId;
-  }
-  catch(err){
-    res.json({error:err})
-  }
-})
+
 businessRouter.get("/dashboard/requests/")
 module.exports = businessRouter;

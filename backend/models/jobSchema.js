@@ -21,6 +21,11 @@ const jobModel = mongoose.Schema({
       required: true,
     },
   ],
+  roomCode:{
+      type: String,
+      required:true
+  },
+  
 });
 
 module.exports = mongoose.model("Job", jobModel);
