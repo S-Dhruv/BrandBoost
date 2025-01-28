@@ -156,4 +156,46 @@ creatorRouter.post("/dashboard/ongoing/room/join",creatorAuthMiddleware,async(re
     console.log(err);
   }
 })
+const requestModel = require("../models/requestSchema")
+creatorRouter.post(
+  "/dashboard/jobs/apply/:jobId",
+  creatorAuthMiddleware,
+  async (req, res) => {
+    try {
+      const jobId = req.params.jobId;
+      const userId = req.userId;
+
+      // Find the job
+      const job = await jobModel.findById(jobId);
+      if (!job) return res.status(404).json({ message: "Job not found" });
+
+      // Check if the user has already applied
+      if (job.appliedCandidates.includes(userId)) {
+        return res.status(400).json({ message: "You have already applied for this job" });
+      }
+
+      // Add the user to the appliedCandidates array
+      job.appliedCandidates.push(userId);
+      await job.save();
+
+      // Create a new request
+      const request = await requestModel.create({
+        jobId,
+        businessId: job.creatorId,
+        appliedCandidate: userId,
+        isApproved:false,
+      });
+
+      console.log(request);
+      res.json({ message: "Successfully applied for the job", request });
+    } catch (err) {
+      console.log(err);
+      if (err.name === "ValidationError") {
+        res.status(400).json({ error: "Validation failed", details: err.message });
+      } else {
+        res.status(500).json({ error: "Failed to apply for the job", details: err.message });
+      }
+    }
+  }
+);
 module.exports = creatorRouter;
