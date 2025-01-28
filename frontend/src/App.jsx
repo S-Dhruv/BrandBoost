@@ -38,7 +38,7 @@ function App() {
           <Route path="/creator/signup" element={<CreatorSignup />} />
           <Route path="/creator/login" element={<CreatorLogin />} />
           <Route path="/" element={<LandingPage />} />
-          <Route path="/pages/login" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/creator/dashboard" element={
             <ProtectedRoute1>
             <CreatorDashboard />

@@ -37,13 +37,13 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gray-50 border-t border-gray-200">
+    <footer className="bg-[#003554] border-t border-[#006494]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Main Footer Content */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 capitalize">
+              <h3 className="text-lg font-semibold text-white mb-4 capitalize">
                 {category}
               </h3>
               <ul className="space-y-3">
@@ -51,7 +51,7 @@ const Footer = () => {
                   <li key={link.name}>
                     <a
                       href={link.href}
-                      className="text-gray-600 hover:text-[#CC5803] transition-colors"
+                      className="text-gray-300 hover:text-[#00A6FB] transition-colors"
                     >
                       {link.name}
                     </a>
@@ -63,18 +63,18 @@ const Footer = () => {
         </div>
 
         {/* Newsletter */}
-        <div className="border-t border-gray-200 pt-8 mb-8">
+        <div className="border-t border-[#006494] pt-8 mb-8">
           <div className="max-w-md">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <h3 className="text-lg font-semibold text-white mb-4">
               Subscribe to our newsletter
             </h3>
             <div className="flex gap-2">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-2 rounded-lg border border-gray-200 focus:border-[#FFB627] focus:outline-none"
+                className="flex-1 px-4 py-2 rounded-lg border border-[#006494] bg-[#003554] text-white placeholder-gray-400 focus:border-[#00A6FB] focus:outline-none"
               />
-              <button className="px-6 py-2 bg-[#CC5803] hover:bg-[#E2711D] text-white rounded-lg font-semibold transition-all flex items-center gap-2">
+              <button className="px-6 py-2 bg-[#00A6FB] hover:bg-[#0582CA] text-white rounded-lg font-semibold transition-all flex items-center gap-2">
                 Subscribe
                 <Mail className="h-4 w-4" />
               </button>
@@ -83,8 +83,8 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-gray-600">
+        <div className="border-t border-[#006494] pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="text-gray-300">
             © {new Date().getFullYear()} BrandBoost. All rights reserved.
           </div>
 
@@ -94,7 +94,7 @@ const Footer = () => {
               <a
                 key={index}
                 href={link.href}
-                className="text-gray-600 hover:text-[#CC5803] transition-colors"
+                className="text-gray-300 hover:text-[#00A6FB] transition-colors"
               >
                 {link.icon}
               </a>
