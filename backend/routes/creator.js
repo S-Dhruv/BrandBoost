@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const creatorModel = require("../models/creatorSchema");
+const requestModel = require("../models/requestSchema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const creatorAuthMiddleware = require("../middleware/creatorAuth");
@@ -7,7 +8,7 @@ const z = require("zod");
 const jobModel = require("../models/jobSchema");
 const creatorPostModel = require("../models/creatorPostSchema");
 const shortid = require("shortid");
-const rooms = require("../index")
+const rooms = require("../index");
 const creatorRouter = Router();
 const saltRounds = 10;
 const userValidationSchema = z
@@ -115,48 +116,53 @@ creatorRouter.get(
   }
 );
 
-creatorRouter.post(
-  "/dashboard/jobs/apply/:jobId",
+// creatorRouter.post(
+//   "/dashboard/jobs/apply/:jobId",
+//   creatorAuthMiddleware,
+//   async (req, res) => {
+//     const jobId = req.params.jobId;
+//     const userId = req.userId;
+//     const job = await jobModel.findById(jobId);
+//     if (!job) return res.status(404).json("Job not found");
+//     if (job.appliedCandidates.includes(userId))
+//       return res.status(404).json("You have already applied for this job");
+//     job.appliedCandidates.push(userId);
+//     await job.save();
+//     res.json("Successfully applied for the job");
+//   }
+// );
+creatorRouter.get(
+  "/dashboard/ongoing/room/create",
   creatorAuthMiddleware,
   async (req, res) => {
-    const jobId = req.params.jobId;
-    const userId = req.userId;
-    const job = await jobModel.findById(jobId);
-    if (!job) return res.status(404).json("Job not found");
-    if (job.appliedCandidates.includes(userId))
-      return res.status(404).json("You have already applied for this job");
-    job.appliedCandidates.push(userId);
-    await job.save();
-    res.json("Successfully applied for the job");
+    try {
+      const roomCode = shortid(6);
+      rooms[roomCode] = [];
+      rooms[roomCode].push(req.username);
+      console.log(roomCode);
+      res.status(200).json({ roomCode });
+    } catch (err) {
+      console.log(err);
+    }
   }
 );
-creatorRouter.get("/dashboard/ongoing/room/create",creatorAuthMiddleware,async(req,res)=>{
-  try{
-    const roomCode = shortid(6);
-    rooms[roomCode] = [];
-    rooms[roomCode].push(req.username);
-    console.log(roomCode)
-    res.status(200).json({roomCode});
-  }
-  catch(err){
-    console.log(err);
-  }
-})
-creatorRouter.post("/dashboard/ongoing/room/join",creatorAuthMiddleware,async(req,res)=>{
-  try{
-    const roomCode = req.body.roomCode;
-    console.log(rooms);
-    if(!rooms[roomCode]){
-      return res.status(404).json("Room not found");
+creatorRouter.post(
+  "/dashboard/ongoing/room/join",
+  creatorAuthMiddleware,
+  async (req, res) => {
+    try {
+      const roomCode = req.body.roomCode;
+      console.log(rooms);
+      if (!rooms[roomCode]) {
+        return res.status(404).json("Room not found");
+      }
+      rooms[roomCode].push(req.username);
+      res.status(200).json("Successfully joined room");
+    } catch (err) {
+      console.log(err);
     }
-    rooms[roomCode].push(req.username);
-    res.status(200).json("Successfully joined room");
   }
-  catch(err){
-    console.log(err);
-  }
-})
-const requestModel = require("../models/requestSchema")
+);
 creatorRouter.post(
   "/dashboard/jobs/apply/:jobId",
   creatorAuthMiddleware,
@@ -171,7 +177,9 @@ creatorRouter.post(
 
       // Check if the user has already applied
       if (job.appliedCandidates.includes(userId)) {
-        return res.status(400).json({ message: "You have already applied for this job" });
+        return res
+          .status(400)
+          .json({ message: "You have already applied for this job" });
       }
 
       // Add the user to the appliedCandidates array
@@ -183,7 +191,7 @@ creatorRouter.post(
         jobId,
         businessId: job.creatorId,
         appliedCandidate: userId,
-        isApproved:false,
+        isApproved: false,
       });
 
       console.log(request);
@@ -191,11 +199,30 @@ creatorRouter.post(
     } catch (err) {
       console.log(err);
       if (err.name === "ValidationError") {
-        res.status(400).json({ error: "Validation failed", details: err.message });
+        res
+          .status(400)
+          .json({ error: "Validation failed", details: err.message });
       } else {
-        res.status(500).json({ error: "Failed to apply for the job", details: err.message });
+        res
+          .status(500)
+          .json({ error: "Failed to apply for the job", details: err.message });
       }
     }
   }
 );
+
+creatorRouter.get("/dashboard/ongoing", async (req, res) => {
+  try {
+    const userId = req.userId;
+    const jobs = await jobModel.find({
+      approvedCandidate: userId,
+      isCompleted: false,
+    });
+    res.json(jobs);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = creatorRouter;

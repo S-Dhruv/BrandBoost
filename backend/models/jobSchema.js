@@ -21,6 +21,15 @@ const jobModel = mongoose.Schema({
       required: true,
     },
   ],
+  approvedCandidate: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Creator",
+    default: null,
+  },
+  isCompleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("Job", jobModel);

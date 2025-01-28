@@ -16,10 +16,14 @@ const requestModel = mongoose.Schema({
     ref: "Creator",
     required: true,
   },
-  isApproved :{
+  isApproved: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
+  isCompleted: {
+    type: String,
+    default: "pending",
+  },
 });
 
 module.exports = mongoose.model("Request", requestModel);

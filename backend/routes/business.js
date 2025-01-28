@@ -7,9 +7,9 @@ const z = require("zod");
 const jobModel = require("../models/jobSchema");
 const businessRouter = Router();
 const saltRounds = 10;
-const creatorPostModel = require("../models/creatorPostSchema")
-const requestModel = require("../models/requestSchema")
-const creatorModel = require("../models/creatorSchema")
+const creatorPostModel = require("../models/creatorPostSchema");
+const requestModel = require("../models/requestSchema");
+const creatorModel = require("../models/creatorSchema");
 const userValidationSchema = z
   .object({
     username: z.string().min(2).max(30),
@@ -69,9 +69,13 @@ businessRouter.post("/signup", async (req, res) => {
   });
 });
 
+// TEST ROUTE
+
 businessRouter.get("/verified", businessAuthMiddleware, (req, res) => {
   res.send("You are verified");
 });
+
+//POSTING A JOB
 
 businessRouter.post(
   "/dashboard/upload",
@@ -94,6 +98,9 @@ businessRouter.post(
     });
   }
 );
+
+// VIEWING ALL THE JOBS CREATED
+
 businessRouter.get(
   "/dashboard/jobs",
   businessAuthMiddleware,
@@ -103,6 +110,8 @@ businessRouter.get(
     res.json(jobs);
   }
 );
+
+// VIEWING ALL THE POSTS CREATED BY THE CREATOR
 businessRouter.get(
   "/dashboard/posts/view",
   businessAuthMiddleware,
@@ -111,44 +120,71 @@ businessRouter.get(
     res.json(posts);
   }
 );
-businessRouter.get("/dashboard/requests/:jobId", businessAuthMiddleware, async (req, res) => {
-  try {
-    const jobId = req.params.jobId;
-    console.log(jobId);
-    const job = await jobModel.findOne({ _id: jobId });
-    console.log(job);
 
-    if (!job) {
-      return res.status(404).json({ message: "Job not found" });
+// GETTING A LIST OF ALL THE APPLICANTS FOR THE PARTICULAR JOB
+
+businessRouter.get(
+  "/dashboard/requests/:jobId",
+  businessAuthMiddleware,
+  async (req, res) => {
+    try {
+      const jobId = req.params.jobId;
+      console.log(jobId);
+      const job = await jobModel.findOne({ _id: jobId });
+      console.log(job);
+
+      if (!job) {
+        return res.status(404).json({ message: "Job not found" });
+      }
+
+      const candid = job.appliedCandidates;
+      console.log(candid);
+
+      if (candid && candid.length > 0) {
+        let detailsOfCandidates = await Promise.all(
+          candid.map(async (user) => {
+            console.log(user);
+            let name = await creatorModel.findById(user);
+            return name;
+          })
+        );
+
+        res.status(200).json({ message: "Jobs here", detailsOfCandidates });
+      } else {
+        res.status(404).json({ message: "No candidates applied for this job" });
+      }
+    } catch (err) {
+      res.status(500).json({ error: err.message });
     }
+  }
+);
 
-    const candid = job.appliedCandidates;
-    console.log(candid);
+// THE BUSINESS APPROVING THE PARTICULAR CANDIDATE FOR THE JOB
 
-    if (candid && candid.length > 0) {
-      let detailsOfCandidates = await Promise.all(
-        candid.map(async (user) => {
-          console.log(user);
-          let name = await creatorModel.findById(user);
-          return name;
-        })
-      );
-
-      res.status(200).json({ message: "Jobs here", detailsOfCandidates });
-    } else {
-      res.status(404).json({ message: "No candidates applied for this job" });
+businessRouter.post(
+  "/dashboard/requests/:jobId/approve",
+  businessAuthMiddleware,
+  async (req, res) => {
+    try {
+      const jobId = req.params.jobId;
+      const approvedId = req.body.approvedId;
+      const job = await jobModel.findById(jobId);
+      if (!job) {
+        return res.status(404).json({ message: "Job not found" });
+      }
+      job.approvedCandidate = approvedId;
+      await job.save();
+      const request = await requestModel.findOne({
+        jobId: jobId,
+        appliedCandidate: approvedId,
+      });
+      request.isApproved = true;
+      await request.save();
+      res.status(200).json({ message: "Job approved successfully" });
+    } catch (err) {
+      res.json({ error: err });
     }
-  } catch (err) {
-    res.status(500).json({ error: err.message });
   }
-});
-businessRouter.get("/dashboard/requests/:jobId/approve",businessAuthMiddleware,async(req,res)=>{
-  try{
-    const jobId=req.params.jobId;
-  }
-  catch(err){
-    res.json({error:err})
-  }
-})
-businessRouter.get("/dashboard/requests/")
+);
+businessRouter.get("/dashboard/requests/");
 module.exports = businessRouter;

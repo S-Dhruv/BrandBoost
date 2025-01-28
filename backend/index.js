@@ -27,11 +27,12 @@ const io = new Server(server, {
   },
 });
 
-
-app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true, 
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -50,7 +51,7 @@ io.use(async (socket, next) => {
     const decoded = jwt.verify(token, process.env.JWT_CREATOR_SECRET);
     socket.userId = decoded.userId;
     const creatorName = await creatorModel.findById(decoded.userId);
-    socket.username = creatorName.username 
+    socket.username = creatorName.username;
     next();
   } catch (err) {
     return next(new Error("Authentication error: Invalid token"));
@@ -63,7 +64,7 @@ io.on("connection", (socket) => {
   socket.on("join-room", ({ room }) => {
     try {
       if (!room) throw new Error("Room code is required");
-      
+
       if (!rooms[room]) {
         rooms[room] = [];
       }
@@ -81,12 +82,14 @@ io.on("connection", (socket) => {
   socket.on("send-message", ({ room, message }) => {
     try {
       if (!room || !message) throw new Error("Room and message are required");
-      
-      io.to(room).emit("send-message", { 
-        message, 
-        username: socket.username 
+
+      io.to(room).emit("send-message", {
+        message,
+        username: socket.username,
       });
-      console.log(`Message from ${socket.username} in room ${room}: ${message}`);
+      console.log(
+        `Message from ${socket.username} in room ${room}: ${message}`
+      );
     } catch (error) {
       console.error("Error sending message:", error);
       socket.emit("error", { message: "Failed to send message" });
@@ -110,9 +113,6 @@ io.on("connection", (socket) => {
     }
   });
 });
-
-
-
 
 async function main() {
   await mongoose.connect(process.env.MONGO_URL);
