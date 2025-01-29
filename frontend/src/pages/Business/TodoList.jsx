@@ -81,58 +81,78 @@ const TodoList = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-4">Todo List</h1>
+    <div className="min-h-screen flex items-center justify-center bg-[#081A42] pt-20">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-0 w-full h-1/2 bg-gradient-to-b from-[#081A42] via-[#0F3A68] to-transparent"></div>
+        <div className="absolute -right-48 top-48 w-96 h-96 bg-[#328AB0]/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -left-48 bottom-48 w-96 h-96 bg-[#42A4E0]/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute left-1/2 top-1/3 -translate-x-1/2 w-96 h-96 bg-[#1D78A0]/20 rounded-full blur-3xl animate-pulse"></div>
+      </div>
 
-      {error && (
-        <div className="mb-4 p-4 bg-red-50 border border-red-200 text-red-600 rounded-md">
-          {error}
-        </div>
-      )}
+      {/* Main content */}
+      <div className="relative z-10 w-full max-w-md px-4">
+        <div className="bg-white p-8 rounded-3xl shadow-lg border border-[#328AB0]/20">
+          <div className="mb-8 text-center">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#42A4E0] to-[#1D78A0] text-transparent bg-clip-text">
+              Todo List
+            </h2>
+            <p className="mt-2 text-[#081A42]">Manage your tasks efficiently</p>
+          </div>
 
-      <form onSubmit={addTodo} className="flex gap-2 mb-4">
-        <input
-          type="text"
-          value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
-          placeholder="Add a new todo"
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Add'}
-        </button>
-      </form>
+          {error && (
+            <div className="mb-4 p-4 bg-red-50 border border-red-200 text-red-600 rounded-2xl">
+              {error}
+            </div>
+          )}
 
-      {loading && !todos.length ? (
-        <div className="flex justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
-        </div>
-      ) : (
-        <ul className="space-y-2">
-          {Array.isArray(todos) && todos.map((todo) => (
-            <li
-              key={todo._id}
-              className="flex items-center justify-between p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors"
+          <form onSubmit={addTodo} className="space-y-6">
+            <div className="relative group">
+              <input
+                type="text"
+                value={newTodo}
+                onChange={(e) => setNewTodo(e.target.value)}
+                placeholder="Add a new todo"
+                className="w-full px-5 py-4 rounded-2xl bg-[#F9FAFB] border-2 border-[#328AB0]/20 text-[#081A42] placeholder-[#A1C6D2] focus:outline-none focus:border-[#42A4E0] transition-all duration-300 group-hover:border-[#42A4E0]/50"
+              />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#42A4E0]/20 to-[#1D78A0]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur"></div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-[#42A4E0] text-white py-4 rounded-2xl hover:bg-[#1D78A0] focus:outline-none transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             >
-              <div className="flex items-center gap-2">
-                <span className={`${todo.completed ? 'line-through text-gray-500' : 'text-gray-800'}`}>
-                  {todo.text}
-                </span>
-              </div>
-              <button
-                onClick={() => deleteTodo(todo._id)}
-                className="px-3 py-1 bg-red-500 text-white text-sm rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
-              >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Add Todo'}
+            </button>
+          </form>
+
+          {loading && !todos.length ? (
+            <div className="flex justify-center mt-8">
+              <Loader2 className="h-8 w-8 animate-spin text-[#42A4E0]" />
+            </div>
+          ) : (
+            <ul className="mt-8 space-y-3">
+              {Array.isArray(todos) && todos.map((todo) => (
+                <li
+                  key={todo._id}
+                  className="flex items-center justify-between p-4 bg-[#F9FAFB] rounded-2xl border-2 border-[#328AB0]/20 hover:border-[#42A4E0]/50 transition-all duration-300 group"
+                >
+                  <span className={`${todo.completed ? 'line-through text-[#A1C6D2]' : 'text-[#081A42]'}`}>
+                    {todo.text}
+                  </span>
+                  <button
+                    onClick={() => deleteTodo(todo._id)}
+                    className="px-4 py-2 bg-red-500 text-white text-sm rounded-xl hover:bg-red-600 focus:outline-none transition-colors duration-300"
+                  >
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
