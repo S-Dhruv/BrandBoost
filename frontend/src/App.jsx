@@ -19,6 +19,8 @@ import CreatorJobs from "./pages/Creator/Jobs";
 import CreatorRequests from "./pages/Creator/Requests";
 import CreatorOngoing from "./pages/Creator/Ongoing";
 import CreatorPosts from "./pages/Creator/Posts";
+import Admin from "./pages/Admin.jsx";
+import WaitingApproval from "./pages/Creator/WaitingApproval.jsx";
 import BusinessWorkspace from "./pages/Business/BusinessWorkspace.jsx";
 import {
   BrowserRouter as Router,
@@ -64,7 +66,19 @@ function App() {
           draggable
           pauseOnHover
         />
+        
         <Routes>
+        <Route
+            path="/admin"
+            element={
+                <Admin />}
+          />
+          <Route
+            path="/creator/dashboard/waiting-approval"
+            element={
+                <WaitingApproval />
+            }
+          />
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />({userType === "creator"}
           )?(
@@ -126,6 +140,7 @@ function App() {
               </ProtectedRoute1>
             }
           />
+          
           <Route path="*" element={<div>Page Not Found</div>} />
           ) :(
           <Route path="/business/signup" element={<BusinessSignup />} />

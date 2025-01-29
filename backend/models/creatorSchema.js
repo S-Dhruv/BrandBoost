@@ -20,6 +20,10 @@ const creatorModel = mongoose.Schema({
     type: String,
     required: true,
   },
+  isApproved:{
+    type: Boolean,
+    default: false,
+  }
 });
 
 module.exports = mongoose.model("Creator", creatorModel);

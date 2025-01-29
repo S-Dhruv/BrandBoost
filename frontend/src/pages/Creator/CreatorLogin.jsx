@@ -11,24 +11,38 @@ const CreatorLogin = () => {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passRef.current.value;
-    const response = await fetch("http://localhost:3000/creator/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await response.json();
-    if (data.message === "Login successful") {
-      console.log("Login Success");
-      const role = data.role;
-      console.log(role);
-      localStorage.setItem("role", role);
-      localStorage.setItem("isLogin", true);
-      localStorage.setItem("token", data.token);
-      nav("/creator/dashboard");
+  
+    try {
+      const response = await fetch("http://localhost:3000/creator/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+  
+      const data = await response.json();
+  
+      if (data.message === "Login successful") {
+        if (data.isApproved === false) {
+          nav("/creator/dashboard/waiting-approval");
+          return;
+        } else {
+          console.log("Login Success");
+          const role = data.role;
+          console.log(role);
+          localStorage.setItem("role", role);
+          localStorage.setItem("isLogin", true);
+          localStorage.setItem("token", data.token);
+          nav("/creator/dashboard");
+        }
+      } else {
+        console.log("Login failed:", data.message);
+      }
+    } catch (err) {
+      console.log("Error during login:", err);
     }
-  }
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#081A42] pt-20"> {/* Adjusted for spacing */}
       <ModernNavbar />

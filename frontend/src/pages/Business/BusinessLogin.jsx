@@ -1,17 +1,21 @@
 import React from "react";;
-import { useRef } from "react";;
+import { useRef,useState } from "react";;
 import { useNavigate } from "react-router-dom";;
 import ModernNavbar from '../../components/ModernNavbar';
-
 const BusinessLogin = () => {
   const emailRef = useRef(null);
   const passRef = useRef(null);
   const nav = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+const handleLogin = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+
+  try {
     const email = emailRef.current.value;
     const password = passRef.current.value;
+
     const response = await fetch("http://localhost:3000/business/login", {
       method: "POST",
       headers: {
@@ -19,17 +23,27 @@ const BusinessLogin = () => {
       },
       body: JSON.stringify({ email, password }),
     });
+
     const data = await response.json();
-    if (data.message === "Login successful") {
-      console.log("Login Success");
-      const role = data.role;
-      console.log(role);
-      localStorage.setItem("role",  role);
-      localStorage.setItem("isLogin",  true);
+
+    if (data.message === "Login successful" && data.token) {
+      localStorage.setItem("role", data.role);
+      localStorage.setItem("isLogin", "true");
       localStorage.setItem("token", data.token);
-      nav("/business/dashboard");
+
+      await new Promise(resolve => setTimeout(resolve, 5000));
+
+      nav("/business/dashboard", { replace: true });
+    } else {
+      console.error("Login failed:", data.message);
     }
+  } catch (error) {
+    console.error("Login error:", error);
+  } finally {
+    setLoading(false);
   }
+};
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#081A42] pt-20">
       <ModernNavbar />
@@ -52,7 +66,7 @@ const BusinessLogin = () => {
             <p className="mt-2 text-[#081A42]">Log in to your business account</p>
           </div>
           
-          <form onSubmit={handleLogin} className="space-y-6">
+          <form  className="space-y-6">
             <div className="space-y-4">
               <div className="relative group">
                 <input
@@ -80,8 +94,9 @@ const BusinessLogin = () => {
             </div>
 
             <button
-              type="submit"
+              type="button"
               className="w-full bg-[#42A4E0] text-white py-4 rounded-2xl hover:bg-[#1D78A0] focus:outline-none transition-colors duration-300"
+              onClick={handleLogin}
             >
               Login
             </button>
