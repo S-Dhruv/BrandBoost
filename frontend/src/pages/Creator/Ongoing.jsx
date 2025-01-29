@@ -1,62 +1,60 @@
-import React, { useContext, useRef, useEffect, useState } from 'react';
-import { SocketContext } from '../../util/SocketProvider';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useRef, useEffect, useState } from "react";
+import { SocketContext } from "../../util/SocketProvider";
+import { useNavigate } from "react-router-dom";
+import OngoingNew from "./OngoingNew";
 
 const Ongoing = () => {
   const nav = useNavigate();
   const givenRoomCode = useRef(null);
   const { socket, connected } = useContext(SocketContext);
 
-
   useEffect(() => {
-    if(!socket) return;
-    socket.on("error-message",({message})=>{
+    if (!socket) return;
+    socket.on("error-message", ({ message }) => {
       alert(message);
-    })
+    });
     if (!connected) {
-      console.log('Socket not connected');
+      console.log("Socket not connected");
     }
   }, [connected]);
 
   const handleJoinRoom = () => {
     if (!connected || !socket) {
-      console.error('Cannot join room: Socket not connected');
+      console.error("Cannot join room: Socket not connected");
       return;
     }
 
     const room = givenRoomCode.current.value;
     if (room) {
-      socket.emit('join-room', { room });
-      localStorage.setItem('room',room);
+      socket.emit("join-room", { room });
+      localStorage.setItem("room", room);
       console.log(`Joining room: ${room}`);
-      nav('/creator/dashboard/ongoing/workspace');
+      nav("/creator/dashboard/ongoing/workspace");
     } else {
-      console.error('Room code is required');
+      console.error("Room code is required");
     }
   };
 
   return (
     <div>
       <form>
-        <input 
-          type="text" 
-          placeholder="Enter your room code" 
+        <input
+          type="text"
+          placeholder="Enter your room code"
           ref={givenRoomCode}
           disabled={!connected}
         />
-        <button 
-          type="button" 
-          onClick={handleJoinRoom}
-          disabled={!connected}
-        >
+        <button type="button" onClick={handleJoinRoom} disabled={!connected}>
           Join Room
         </button>
       </form>
       {!connected && (
-        <p style={{ color: 'red' }}>
+        <p style={{ color: "red" }}>
           Not connected to server. Please check your authentication.
         </p>
       )}
+
+      <OngoingNew />
     </div>
   );
 };
