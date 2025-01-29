@@ -1,7 +1,7 @@
 import React from "react";
 import BusinessSidebar from "./BusinessSidebar";
 import ModernNavbar from "../../components/ModernNavbar";
-
+import Gemini from "./Gemini"
 const links = {
   business: {
     jobs: "/business/dashboard/jobs",
@@ -33,7 +33,12 @@ const BusinessDashboard = () => {
     
       <>
       <ModernNavbar {...userLinks}/>
+      <br></br>
+      <br></br>
+      <br></br>
+      <Gemini />
       </>
+      
     
   );
 };
