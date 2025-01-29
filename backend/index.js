@@ -41,9 +41,63 @@ app.use(cookieParser());
 let rooms = {};
 let todo ={};
 // Routes
+
 app.use("/business", businessRouter);
 app.use("/creator", creatorRouter);
+app.post("/admin/approve/", async (req, res) => {
+  try {
+    const { email, isApproved } = req.body; // Extract email and isApproved from the request body
 
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const creator = await creatorModel.findOne({ email }); // Use await for async operation
+
+    if (!creator) {
+      return res.status(404).json({ message: "Creator not found" });
+    }
+
+    // Toggle the isApproved status based on the request
+    creator.isApproved = isApproved;
+    await creator.save();
+
+    if (isApproved) {
+      console.log("YAY");
+      res.status(200).json({ message: "Approved" });
+    } else {
+      console.log("No yay");
+      res.status(200).json({ message: "Disapproved" });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+app.post("/admin/waiting", async (req, res) => {
+  try {
+    const { email } = req.body; 
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const creator = await creatorModel.findOne({ email }); 
+
+    if (!creator) {
+      return res.status(404).json({ message: "Creator not found" });
+    }
+
+    if (creator.isApproved === true) {
+      return res.status(200).json({ message: "Approved" });
+    } else {
+      return res.status(200).json({ message: "No approval" });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 io.use(async (socket, next) => {
   const token = socket.handshake.auth?.token;
 

@@ -10,6 +10,7 @@ const creatorPostModel = require("../models/creatorPostSchema");
 const shortid = require("shortid");
 const rooms = require("../index");
 const creatorRouter = Router();
+const {sendMail} = require("../utils/emailUtils");
 const saltRounds = 10;
 const userValidationSchema = z
   .object({
@@ -24,37 +25,53 @@ const userValidationSchema = z
     path: ["confirmPassword"],
   });
 
-creatorRouter.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await creatorModel.findOne({ email: email });
-    console.log(user);
-    const result = bcrypt.compare(password, user.password);
-    if (!result) {
-      res.status(404).send("Invalid email or password");
-    }
-    console.log("Correct Password");
-    const token = jwt.sign(
-      {
-        userId: user._id,
+  creatorRouter.post("/login", async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const user = await creatorModel.findOne({ email: email });
+  
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+  
+      const result = await bcrypt.compare(password, user.password); // Use await here
+      if (!result) {
+        return res.status(404).send("Invalid email or password");
+      }
+  
+      console.log("Correct Password");
+      const token = jwt.sign(
+        {
+          userId: user._id,
+          role: "creator",
+        },
+        process.env.JWT_CREATOR_SECRET,
+        { expiresIn: "1d" }
+      );
+  
+      console.log("Token: " + token);
+      res.cookie("token", token, {
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+  
+      res.status(200).json({
+        token,
+        message: "Login successful",
         role: "creator",
-      },
-      process.env.JWT_CREATOR_SECRET,
-      { expiresIn: "1d" }
-    );
-    console.log("Token: " + token);
-    res.cookie("token", token, {
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-    res
-      .status(200)
-      .json({ token, message: "Login successful", role: "creator" });
-    console.log("Cookie has been set successfully");
-  } catch (err) {
-    console.log(err);
-  }
-});
-
+        isApproved: user.isApproved, // Send the actual isApproved value from the database
+      });
+  
+      console.log("Cookie has been set successfully");
+  
+      if (user.isApproved === false) {
+        sendMail(user);
+        console.log("Email sent");
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Internal server error");
+    }
+  });
 creatorRouter.post("/signup", async (req, res) => {
   try {
     const validation = userValidationSchema.safeParse(req.body);

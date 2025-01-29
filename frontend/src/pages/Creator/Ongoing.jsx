@@ -40,7 +40,7 @@ const Ongoing = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#081A42] flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-[#081A42] flex items-center justify-center gap-48 relative overflow-hidden">
       {/* Animated background elements */}
 
       {/* Main content */}
