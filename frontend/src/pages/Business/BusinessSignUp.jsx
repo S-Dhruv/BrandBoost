@@ -29,7 +29,6 @@ const BusinessSignUp = () => {
     }
 
     setErrorMessage("");
-<<<<<<< HEAD
     
     try{
     const response = await fetch("http://localhost:3000/business/signup", {
@@ -60,14 +59,6 @@ const BusinessSignUp = () => {
  
 
 
-=======
-    console.log("Username:", username);
-    console.log("Email:", email);
-    console.log("Phone:", phone);
-    // Add your signup logic here
-    
-  };
->>>>>>> 675dacbc2ceb7c7aa43fae7df921f1e0c3d7cfd6
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#081A42] pt-20"> {/* Added pt-20 for spacing */}
