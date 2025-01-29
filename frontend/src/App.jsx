@@ -25,6 +25,8 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import CreatorWorkspace from "./pages/Creator/CreatorWorkspace.jsx";
 function App() {
   const [isLogin, setIsLogin] = useState(
@@ -50,6 +52,17 @@ function App() {
   return (
     <>
       <Router>
+        <ToastContainer
+          position="top-right"
+          autoClose={10000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />({userType === "creator"}
