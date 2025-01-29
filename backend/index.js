@@ -351,7 +351,7 @@ app.get('/api/todos', async (req, res) => {
 app.post('/api/todos', async (req, res) => {
   const todo = new Todo({
     text: req.body.text,
-    roomCode: req.body.roomCode // if you want to associate todos with rooms
+    roomCode: req.body.roomCode, // Optional: if you want to associate todos with rooms
   });
 
   try {
@@ -359,6 +359,24 @@ app.post('/api/todos', async (req, res) => {
     res.status(201).json(newTodo);
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+});
+
+// PUT (update) a todo's completion status
+app.put('/api/todos/:id', async (req, res) => {
+  try {
+    const todo = await Todo.findById(req.params.id);
+    if (!todo) {
+      return res.status(404).json({ message: 'Todo not found' });
+    }
+
+    // Toggle the completed status
+    todo.completed = !todo.completed;
+    const updatedTodo = await todo.save();
+
+    res.json(updatedTodo);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 
@@ -375,6 +393,8 @@ app.delete('/api/todos/:id', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+
 async function main() {
   await mongoose.connect(process.env.MONGO_URL);
   console.log("Successfully connected to the database");

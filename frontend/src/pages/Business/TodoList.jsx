@@ -62,19 +62,25 @@ const TodoList = () => {
     }
   };
 
-  const deleteTodo = async (id) => {
+  const toggleTodoCompletion = async (id) => {
     try {
       setLoading(true);
+      const todoToUpdate = todos.find(todo => todo._id === id);
       const response = await fetch(`${API_URL}/todos/${id}`, {
-        method: 'DELETE',
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ completed: !todoToUpdate.completed }),
       });
       if (!response.ok) {
-        throw new Error('Failed to delete todo');
+        throw new Error('Failed to update todo');
       }
-      setTodos(todos.filter(todo => todo._id !== id));
+      const updatedTodo = await response.json();
+      setTodos(todos.map(todo => todo._id === id ? updatedTodo : todo));
     } catch (err) {
-      console.error('Failed to delete todo:', err);
-      setError('Failed to delete todo');
+      console.error('Failed to update todo:', err);
+      setError('Failed to update todo');
     } finally {
       setLoading(false);
     }
@@ -138,14 +144,17 @@ const TodoList = () => {
                   key={todo._id}
                   className="flex items-center justify-between p-4 bg-[#F9FAFB] rounded-2xl border-2 border-[#328AB0]/20 hover:border-[#42A4E0]/50 transition-all duration-300 group"
                 >
-                  <span className={`${todo.completed ? 'line-through text-[#A1C6D2]' : 'text-[#081A42]'}`}>
+                  <span
+                    className={`${todo.completed ? 'line-through text-[#A1C6D2]' : 'text-[#081A42]'} cursor-pointer`}
+                    onClick={() => toggleTodoCompletion(todo._id)}
+                  >
                     {todo.text}
                   </span>
                   <button
-                    onClick={() => deleteTodo(todo._id)}
-                    className="px-4 py-2 bg-red-500 text-white text-sm rounded-xl hover:bg-red-600 focus:outline-none transition-colors duration-300"
+                    onClick={() => toggleTodoCompletion(todo._id)}
+                    className="px-4 py-2 bg-green-500 text-white text-sm rounded-xl hover:bg-green-600 focus:outline-none transition-colors duration-300"
                   >
-                    Delete
+                    {todo.completed ? 'Undo' : 'Complete'}
                   </button>
                 </li>
               ))}
