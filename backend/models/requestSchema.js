@@ -24,6 +24,10 @@ const requestModel = mongoose.Schema({
     type: String,
     default: "pending",
   },
+  roomCode:{
+    type:String,
+    required: true,
+  }
 });
 
 module.exports = mongoose.model("Request", requestModel);

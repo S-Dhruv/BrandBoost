@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, { useContext, useRef, useEffect, useState } from 'react';
 import { SocketContext } from '../../util/SocketProvider';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,7 +7,12 @@ const Ongoing = () => {
   const givenRoomCode = useRef(null);
   const { socket, connected } = useContext(SocketContext);
 
+
   useEffect(() => {
+    if(!socket) return;
+    socket.on("error-message",({message})=>{
+      alert(message);
+    })
     if (!connected) {
       console.log('Socket not connected');
     }

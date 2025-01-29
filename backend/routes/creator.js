@@ -174,7 +174,8 @@ creatorRouter.post(
       // Find the job
       const job = await jobModel.findById(jobId);
       if (!job) return res.status(404).json({ message: "Job not found" });
-
+      const roomCode = job.roomCode;
+      console.log(roomCode);
       // Check if the user has already applied
       if (job.appliedCandidates.includes(userId)) {
         return res
@@ -192,6 +193,7 @@ creatorRouter.post(
         businessId: job.creatorId,
         appliedCandidate: userId,
         isApproved: false,
+        roomCode,
       });
 
       console.log(request);

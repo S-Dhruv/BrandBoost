@@ -55,6 +55,7 @@ io.use(async (socket, next) => {
     let decoded;
     let user;
 
+    // Try to verify as creator first
     try {
       decoded = jwt.verify(token, process.env.JWT_CREATOR_SECRET);
       user = await creatorModel.findById(decoded.userId);
@@ -62,6 +63,7 @@ io.use(async (socket, next) => {
         socket.userType = 'creator';
       }
     } catch (e) {
+      // If creator verification fails, try business token
       try {
         decoded = jwt.verify(token, process.env.JWT_BUSINESS_SECRET);
         user = await businessModel.findById(decoded.userId);
@@ -78,23 +80,59 @@ io.use(async (socket, next) => {
       return next(new Error("Authentication error: User not found"));
     }
 
+    // Attach user info to socket
     socket.userId = decoded.userId;
-    const creatorName = await creatorModel.findById(decoded.userId);
-    socket.username = creatorName.username 
+    socket.username = user.username;
+    
+    console.log(`User connected: ${user.username} (${socket.userType})`);
     next();
   } catch (err) {
     console.error("Socket authentication error:", err);
     return next(new Error(`Authentication error: ${err.message}`));
   }
 });
-
 io.on("connection", (socket) => {
   console.log(`${socket.username} (${socket.userType}) connected to socket`);
 
+  // Join Room
   socket.on("join-room", async ({ room }) => {
     try {
-      if (!room) throw new Error("Room code is required");
-      
+      if (!room) {
+        socket.emit("error-message",{
+          status:"404",
+          message:"Room code is required"
+        });
+        
+      }
+
+      // Verify room access based on user type
+      if (socket.userType === 'business') {
+        const job = await jobModel.findOne({ 
+          roomCode: room,
+          creatorId: socket.userId 
+        });
+        if (!job) {
+          socket.emit("error-message",{
+            status:"404",
+            message:"Room code is required"
+          });
+         
+        }
+      } else if (socket.userType === 'creator') {
+        const job = await jobModel.findOne({ 
+          roomCode: room,
+          appliedCandidates: socket.userId 
+        });
+        if (!job) {
+          socket.emit("error-message",{
+            status:"404",
+            message:"Room code is required"
+          });
+          
+        }
+      }
+
+      // Initialize room if it doesn't exist
       if (!rooms[room]) {
         rooms[room] = {
           messages: [],
@@ -102,19 +140,23 @@ io.on("connection", (socket) => {
         };
       }
 
+      // Add user to room
       const userInfo = {
         username: socket.username,
         userType: socket.userType
       };
       rooms[room].users.push(userInfo);
       
+      // Join the socket room
       socket.join(room);
       
+      // Send room history to joining user
       socket.emit("room-history", {
         messages: rooms[room].messages,
         users: rooms[room].users
       });
 
+      // Notify others in room
       io.to(room).emit("user-joined", userInfo);
 
       console.log(`${socket.username} (${socket.userType}) joined room ${room}`);
@@ -124,14 +166,32 @@ io.on("connection", (socket) => {
     }
   });
 
+  // Send Message
   socket.on("send-message", ({ room, message }) => {
     try {
       if (!room || !message) throw new Error("Room and message are required");
-      
-      io.to(room).emit("send-message", { 
-        message, 
-        username: socket.username 
-      });
+
+      // Verify user is in room
+      if (!socket.rooms.has(room)) {
+        throw new Error("Not in room");
+      }
+
+      // Create message object
+      const messageObj = {
+        sender: socket.username,
+        content: message,
+        userType: socket.userType,
+        timestamp: new Date().toISOString()
+      };
+
+      // Store message in room history
+      if (rooms[room]) {
+        rooms[room].messages.push(messageObj);
+      }
+
+      // Broadcast message to room
+      io.to(room).emit("new-message", messageObj);
+
       console.log(`Message from ${socket.username} in room ${room}: ${message}`);
     } catch (error) {
       console.error("Error sending message:", error);
@@ -145,12 +205,15 @@ io.on("connection", (socket) => {
       if (!room) throw new Error("Room code is required");
 
       if (rooms[room]) {
+        // Remove user from room's user list
         rooms[room].users = rooms[room].users.filter(
           user => user.username !== socket.username
         );
 
+        // Leave the socket room
         socket.leave(room);
 
+        // Notify others
         io.to(room).emit("user-left", {
           username: socket.username,
           userType: socket.userType
@@ -158,6 +221,7 @@ io.on("connection", (socket) => {
 
         console.log(`${socket.username} left room ${room}`);
 
+        // Clean up empty rooms
         if (rooms[room].users.length === 0) {
           delete rooms[room];
         }
@@ -168,9 +232,11 @@ io.on("connection", (socket) => {
     }
   });
 
+  // Handle disconnection
   socket.on("disconnect", () => {
     console.log(`${socket.username} disconnected`);
     
+    // Find and leave all rooms user was in
     Object.keys(rooms).forEach(room => {
       if (rooms[room].users.some(user => user.username === socket.username)) {
         rooms[room].users = rooms[room].users.filter(
