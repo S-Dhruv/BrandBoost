@@ -44,12 +44,12 @@ const OngoingNew = () => {
   }
 
   return (
-    <div>
+    <div className="bg-white">
       <h1>Ongoing Jobs</h1>
       <br />
       <div className="jobs-list">
         {jobs.map((job) => (
-          <div key={job._id} className="job-card">
+          <div key={job._id} className="job-card bg-white">
             <h3>{job.title}</h3>
             <p>{job.description}</p>
             <p>{job.roomCode}</p>
