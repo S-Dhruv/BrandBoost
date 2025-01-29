@@ -96,7 +96,7 @@ const Jobs = () => {
                 <div className="flex items-center mb-4 text-sm text-[#A1C6D2]">
                   <span className="mr-2">Posted by:</span>
                   <span className="font-medium text-[#328AB0]">
-                    {job.creatorId.username || "Anonymous"}
+                    {job.creatorId?.username || "Anonymous"}
                   </span>
                 </div>
                 
