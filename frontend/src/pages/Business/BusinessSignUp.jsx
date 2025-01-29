@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
 import ModernNavbar from "../../components/ModernNavbar";
+import { useNavigate } from "react-router-dom";
+
 
 const BusinessSignUp = () => {
   const emailRef = useRef(null);
@@ -7,10 +9,13 @@ const BusinessSignUp = () => {
   const passRef = useRef(null);
   const confirmPassRef = useRef(null);
   const phoneRef = useRef(null);
+  const nav = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
+
+  
 
     const email = emailRef.current.value;
     const username = usernameRef.current.value;
@@ -24,11 +29,36 @@ const BusinessSignUp = () => {
     }
 
     setErrorMessage("");
-    console.log("Username:", username);
-    console.log("Email:", email);
-    console.log("Phone:", phone);
-    // Add your signup logic here
-  };
+    
+    try{
+    const response = await fetch("http://localhost:3000/business/signup", {
+      method:"POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username , email, password ,confirmPassword , phone})
+    });
+
+    const data = await response.json();
+    
+    console.log(email)
+    console.log(username)
+    console.log(password)
+    
+    if(data.message === "User successfully created"){
+      console.log("User successfully created");
+      nav("/business/login", { replace: true });
+    }else{
+      console.log("failed")
+    }
+  }catch(error){
+    console.log(error)
+  }
+}
+  
+ 
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#081A42] pt-20"> {/* Added pt-20 for spacing */}
