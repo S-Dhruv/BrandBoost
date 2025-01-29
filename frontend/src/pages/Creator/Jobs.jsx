@@ -59,21 +59,29 @@ const Jobs = () => {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div>
-      <h1>Jobs</h1>
+    <div className="container mx-auto px-4 py-8">
+    <h1 className="text-center pt-8 font-semibold text-3xl mb-8">Jobs Tailored for You</h1>
+    <div className="space-y-6">
       {jobs.map((job) => (
-        <div key={job._id}>
-          <h2>{job.title}</h2>
-          <p>{job.description}</p>
-          <p>Posted By : {job.creatorId.username || "Anonymous"}</p>
+        <div
+          className="border border-gray-200 rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow duration-300"
+          key={job._id}
+        >
+          <h2 className="text-xl font-bold text-gray-800 mb-2 capitalize">{job.title}</h2>
+          <p className="text-gray-600 mb-4 capitalize">{job.description}</p>
+          <p className="text-sm text-gray-500 mb-4">
+            Posted By: {job.creatorId.username || "Anonymous"}
+          </p>
           <button
-            className="bg-blue-500 cursor-pointer"
-            onClick={() => handleApply(job._id)}>
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300"
+            onClick={() => handleApply(job._id)}
+          >
             Apply
           </button>
         </div>
       ))}
     </div>
+  </div>
   );
 };
 
