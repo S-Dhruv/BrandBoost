@@ -12,6 +12,7 @@ import BusinessJobs from "./pages/Business/Jobs";
 import BusinessRequests from "./pages/Business/Requests";
 import BusinessOngoing from "./pages/Business/Ongoing";
 import BusinessPosts from "./pages/Business/Posts";
+import BusinessTodo from "./pages/Business/TodoList.jsx";
 import theme from "./theme"; 
 import CreatorJobs from "./pages/Creator/Jobs";
 import CreatorRequests from "./pages/Creator/Requests";
@@ -145,6 +146,14 @@ function App() {
             }
           />
           
+          <Route
+            path="/business/dashboard/ongoing/workspace/todo"
+            element={
+              <ProtectedRoute2>
+                <BusinessTodo />
+              </ProtectedRoute2>
+            }
+          />
           <Route
             path="/business/dashboard/post"
             element={

@@ -12,7 +12,7 @@ const PORT = 3000;
 const creatorModel = require("./models/creatorSchema");
 const businessModel = require("./models/businessSchema");
 const jobModel = require("./models/jobSchema");
-
+const Todo = require("./models/todoSchema")
 const creatorAuthMiddleware = require("./middleware/creatorAuth");
 const businessAuthMiddleware = require("./middleware/businessAuth");
 const http = require("http");
@@ -39,7 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 let rooms = {};
-
+let todo ={};
 // Routes
 app.use("/business", businessRouter);
 app.use("/creator", creatorRouter);
@@ -231,7 +231,33 @@ io.on("connection", (socket) => {
       socket.emit("error", { message: error.message });
     }
   });
-
+  socket.on("use-todo",({newTask,code})=>{
+    try{
+      if(!newTask || !code){
+        socket.emit("error",{message:"Error with code or task"});
+      }
+      const todoObj = {
+        content: newTask,
+        roomCode:code
+      }
+      if (!todo[code]) {
+        todo[code] = {
+          messages: [],
+          users: []
+        };
+      }
+      
+      // Store the todo in the room
+      todo[code].messages.push(todoObj);
+  
+      io.to(code).emit('use-todo', { content: todo[code].messages });
+      console.log("Emitting use-todo event:", { content: todo[code].messages });
+      console.log(todo[code]);
+    } catch (err) {
+      console.error(err);
+      socket.emit("error", { message: "An error occurred" });
+    }
+  });
   // Handle disconnection
   socket.on("disconnect", () => {
     console.log(`${socket.username} disconnected`);
@@ -256,10 +282,45 @@ io.on("connection", (socket) => {
     });
   });
 });
+// Routes
+// In your POST route
+app.get('/api/todos', async (req, res) => {
+  try {
+    const todos = await Todo.find();
+    res.json(todos);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
+// POST a new todo
+app.post('/api/todos', async (req, res) => {
+  const todo = new Todo({
+    text: req.body.text,
+    roomCode: req.body.roomCode // if you want to associate todos with rooms
+  });
 
+  try {
+    const newTodo = await todo.save();
+    res.status(201).json(newTodo);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
 
-
+// DELETE a todo
+app.delete('/api/todos/:id', async (req, res) => {
+  try {
+    const todo = await Todo.findByIdAndDelete(req.params.id);
+    if (todo) {
+      res.json({ message: 'Todo deleted' });
+    } else {
+      res.status(404).json({ message: 'Todo not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 async function main() {
   await mongoose.connect(process.env.MONGO_URL);
   console.log("Successfully connected to the database");

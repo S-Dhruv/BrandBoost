@@ -69,14 +69,18 @@ const BusinessWorkspace = () => {
     nav('/business/dashboard/ongoing'); 
   };
 
+  const handleTodo = ()=>{
+    nav('/business/dashboard/ongoing/workspace/todo')
+  }
   return (
+    <>
     <div className="flex flex-col h-screen">
       <div className="p-4 bg-gray-100 flex justify-between items-center">
         <h2 className="text-xl font-bold">Chat Room</h2>
         <button 
           onClick={handleLeaveRoom}
           className="px-4 py-2 bg-red-500 text-white rounded"
-        >
+          >
           Leave Room
         </button>
       </div>
@@ -86,13 +90,13 @@ const BusinessWorkspace = () => {
         <div 
           ref={chatContainerRef}
           className="flex-1 p-4 overflow-y-auto"
-        >
+          >
           {messages.map((msg, idx) => (
             <div 
-              key={idx}
-              className={`mb-4 ${
-                msg.sender === socket.username ? 'text-right' : 'text-left'
-              }`}
+            key={idx}
+            className={`mb-4 ${
+              msg.sender === socket.username ? 'text-right' : 'text-left'
+            }`}
             >
               <div className="inline-block">
                 <p className="text-sm text-gray-600">
@@ -100,8 +104,8 @@ const BusinessWorkspace = () => {
                 </p>
                 <div className={`p-3 rounded-lg ${
                   msg.sender === socket.username 
-                    ? 'bg-blue-500 text-white' 
-                    : 'bg-gray-200'
+                  ? 'bg-blue-500 text-white' 
+                  : 'bg-gray-200'
                 }`}>
                   {msg.content}
                 </div>
@@ -128,23 +132,27 @@ const BusinessWorkspace = () => {
       <form 
         onSubmit={handleSendMessage}
         className="p-4 bg-white border-t"
-      >
+        >
         <div className="flex gap-2">
           <input
             type="text"
             ref={messageRef}
             placeholder="Type a message..."
             className="flex-1 px-4 py-2 border rounded"
-          />
+            />
           <button 
             type="submit"
             className="px-6 py-2 bg-blue-500 text-white rounded"
-          >
+            >
             Send
           </button>
         </div>
       </form>
     </div>
+    <div>Head to your mini task for today!</div>
+    <button type="button" className='bg-cyan-500' onClick={handleTodo}>Head to task manager</button>
+    </>
+
   );
 };
 
