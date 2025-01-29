@@ -42,12 +42,6 @@ const Ongoing = () => {
   return (
     <div className="min-h-screen bg-[#081A42] flex items-center justify-center relative overflow-hidden">
       {/* Animated background elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 w-full h-1/2 bg-gradient-to-b from-[#081A42] via-[#0F3A68] to-transparent"></div>
-        <div className="absolute -right-48 top-48 w-96 h-96 bg-[#328AB0]/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -left-48 bottom-48 w-96 h-96 bg-[#42A4E0]/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute left-1/2 top-1/3 -translate-x-1/2 w-96 h-96 bg-[#1D78A0]/20 rounded-full blur-3xl animate-pulse"></div>
-      </div>
 
       {/* Main content */}
       <div className="relative z-10 w-full max-w-md px-4">

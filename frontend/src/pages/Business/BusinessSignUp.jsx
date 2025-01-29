@@ -28,6 +28,7 @@ const BusinessSignUp = () => {
     console.log("Email:", email);
     console.log("Phone:", phone);
     // Add your signup logic here
+    
   };
 
   return (
