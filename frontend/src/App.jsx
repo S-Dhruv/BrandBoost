@@ -1,4 +1,4 @@
-import './App.css'
+import "./App.css";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import CreatorSignup from "./pages/Creator/CreatorSignUp";
@@ -11,6 +11,7 @@ import { useState } from "react";
 import BusinessJobs from "./pages/Business/Jobs";
 import BusinessRequests from "./pages/Business/Requests";
 import BusinessOngoing from "./pages/Business/Ongoing";
+import CreatorTodo from "./pages/Creator/TodoList.jsx";
 import BusinessPosts from "./pages/Business/Posts";
 import BusinessTodo from "./pages/Business/TodoList.jsx";
 import theme from "./theme"; 
@@ -18,7 +19,7 @@ import CreatorJobs from "./pages/Creator/Jobs";
 import CreatorRequests from "./pages/Creator/Requests";
 import CreatorOngoing from "./pages/Creator/Ongoing";
 import CreatorPosts from "./pages/Creator/Posts";
-import BusinessWorkspace from "./pages/Business/BusinessWorkspace.jsx"
+import BusinessWorkspace from "./pages/Business/BusinessWorkspace.jsx";
 import {
   BrowserRouter as Router,
   Routes,
@@ -51,58 +52,82 @@ function App() {
   };
   return (
     <>
-    <Router>
-    <ToastContainer
-        position="top-right"
-        autoClose={10000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      <Routes>
+      <Router>
+        <ToastContainer
+          position="top-right"
+          autoClose={10000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+        <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
-        ({userType === "creator"})?(
+          <Route path="/login" element={<Login />} />({userType === "creator"}
+          )?(
           <Route path="/creator/signup" element={<CreatorSignup />} />
           <Route path="/creator/login" element={<CreatorLogin />} />
-          <Route path="/creator/dashboard" element={
-            <ProtectedRoute1>
-            <CreatorDashboard />
-            </ProtectedRoute1>
-            } />
-            <Route path="/creator/dashboard/jobs" element={
-               <ProtectedRoute1>
-                  <CreatorJobs />
-               </ProtectedRoute1>
-              } />
-            <Route path="/creator/dashboard/requests" element={
-               <ProtectedRoute1>
-                  <CreatorRequests />
-               </ProtectedRoute1>
-              } />
-              <Route path="/creator/dashboard/ongoing" element={
-               <ProtectedRoute1>
-                  <CreatorOngoing />
-               </ProtectedRoute1>
-              } />
-              
-              <Route path="/creator/dashboard/ongoing/workspace" element={
-               <ProtectedRoute1>
-                  <CreatorWorkspace />
-               </ProtectedRoute1>
-              } />
-              
-              <Route path="/creator/dashboard/post" element={
-               <ProtectedRoute1>
-                  <CreatorPosts />
-               </ProtectedRoute1>
-              } />
-            <Route path="*" element={<div>Page Not Found</div>} />
-        ) :(
+          <Route
+            path="/creator/dashboard"
+            element={
+              <ProtectedRoute1>
+                <CreatorDashboard />
+              </ProtectedRoute1>
+            }
+          />
+          <Route
+            path="/creator/dashboard/jobs"
+            element={
+              <ProtectedRoute1>
+                <CreatorJobs />
+              </ProtectedRoute1>
+            }
+          />
+          <Route
+            path="/creator/dashboard/requests"
+            element={
+              <ProtectedRoute1>
+                <CreatorRequests />
+              </ProtectedRoute1>
+            }
+          />
+          <Route
+            path="/creator/dashboard/ongoing"
+            element={
+              <ProtectedRoute1>
+                <CreatorOngoing />
+              </ProtectedRoute1>
+            }
+          />
+          <Route
+            path="/creator/dashboard/ongoing/workspace"
+            element={
+              <ProtectedRoute1>
+                <CreatorWorkspace />
+              </ProtectedRoute1>
+            }
+          />
+          <Route
+            path="/creator/dashboard/ongoing/workspace/todo"
+            element={
+              <ProtectedRoute1>
+                <CreatorTodo />
+              </ProtectedRoute1>
+            }
+          />
+          <Route
+            path="/creator/dashboard/post"
+            element={
+              <ProtectedRoute1>
+                <CreatorPosts />
+              </ProtectedRoute1>
+            }
+          />
+          <Route path="*" element={<div>Page Not Found</div>} />
+          ) :(
           <Route path="/business/signup" element={<BusinessSignup />} />
           <Route path="/business/login" element={<BusinessLogin />} />
           <Route

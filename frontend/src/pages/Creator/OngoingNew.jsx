@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const Ongoing = () => {
+const OngoingNew = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -52,6 +52,7 @@ const Ongoing = () => {
           <div key={job._id} className="job-card">
             <h3>{job.title}</h3>
             <p>{job.description}</p>
+            <p>{job.roomCode}</p>
             <div className="job-details"></div>
             <br />
             <br />
@@ -62,4 +63,4 @@ const Ongoing = () => {
   );
 };
 
-export default Ongoing;
+export default OngoingNew;

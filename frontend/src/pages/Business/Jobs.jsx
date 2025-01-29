@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { SocketContext } from "../../util/SocketProvider";
-import shortId from "shortid"; 
+import shortId from "shortid";
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);

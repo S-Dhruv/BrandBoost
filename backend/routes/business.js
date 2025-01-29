@@ -82,7 +82,7 @@ businessRouter.post(
   businessAuthMiddleware,
   async (req, res) => {
     let candidate = [];
-    const { title, description,roomCode } = req.body;
+    const { title, description, roomCode } = req.body;
     candidate.push(`67965f0752f3723652c33ea2`);
     console.log(req.userId);
     const newJob = await jobModel.create({
@@ -173,6 +173,10 @@ businessRouter.post(
       if (!job) {
         return res.status(404).json({ message: "Job not found" });
       }
+      if (job.approvedCandidate === null)
+        return res
+          .status(500)
+          .json({ message: "Job has already been assigned to a candidate" });
       job.approvedCandidate = approvedId;
       await job.save();
       const request = await requestModel.findOne({
@@ -187,5 +191,31 @@ businessRouter.post(
     }
   }
 );
-businessRouter.get("/dashboard/requests/");
+businessRouter.get(
+  "/dashboard/requests",
+  businessAuthMiddleware,
+  async (req, res) => {
+    const businessId = req.userId;
+    console.log(businessId);
+    const jobs = await jobModel
+      .find({ creatorId: businessId })
+      .populate("creatorId", "username");
+    console.log(jobs);
+    res.json(jobs);
+  }
+);
+
+businessRouter.get(
+  "/dashboard/ongoing",
+  businessAuthMiddleware,
+  async (req, res) => {
+    const businessId = req.userId;
+    console.log(businessId);
+    const jobs = await jobModel
+      .find({ creatorId: businessId, approvedCandidate: { $ne: null } })
+      .populate("creatorId", "username");
+    console.log(jobs);
+    res.json(jobs);
+  }
+);
 module.exports = businessRouter;

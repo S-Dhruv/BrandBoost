@@ -63,6 +63,9 @@ const CreatorWorkspace = () => {
     messageRef.current.value = '';
   };
 
+  const handleTodo = ()=>{
+    nav('/creator/dashboard/ongoing/workspace/todo')
+  }
   const handleLeaveRoom = () => {
     socket.emit('leave-room', { room });
     nav('/creator/dashboard/ongoing'); 
@@ -144,6 +147,9 @@ const CreatorWorkspace = () => {
           </button>
         </div>
       </form>
+      
+    <div>Head to your mini task for today!</div>
+    <button type="button" className='bg-cyan-500' onClick={handleTodo}>Head to task manager</button>
     </div>
   );
 };

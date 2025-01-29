@@ -213,18 +213,22 @@ creatorRouter.post(
   }
 );
 
-creatorRouter.get("/dashboard/ongoing", async (req, res) => {
-  try {
-    const userId = req.userId;
-    const jobs = await jobModel.find({
-      approvedCandidate: userId,
-      isCompleted: false,
-    });
-    res.json(jobs);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: err.message });
+creatorRouter.get(
+  "/dashboard/ongoing",
+  creatorAuthMiddleware,
+  async (req, res) => {
+    try {
+      const userId = req.userId;
+      const jobs = await jobModel.find({
+        approvedCandidate: userId,
+        isCompleted: false,
+      });
+      res.json(jobs);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: err.message });
+    }
   }
-});
+);
 
 module.exports = creatorRouter;
