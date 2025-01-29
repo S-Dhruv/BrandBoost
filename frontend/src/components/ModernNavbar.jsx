@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import { Menu, X, Search, Bell, User } from 'lucide-react';
 import logo from '../assets/logo.png';
+import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const navigation = [
-  { name: 'Jobs', href: '#' },
-  { name: 'Posts', href: '#' },
-  { name: 'Requests', href: '#' },
-  { name: 'Ongoing', href: '#' }
-];
-
-const ModernNavbar = () => {
+const ModernNavbar = ({jobs , posts , requests , ongoing}) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white shadow-lg z-50">
@@ -20,6 +17,10 @@ const ModernNavbar = () => {
           {/* Logo and Brand */}
           <div className="flex items-center">
             <div className="flex-shrink-0 flex items-center">
+
+            <button onClick={() => { 
+              navigate('/')} }className="flex items-center space-x-2">
+
               <div className="h-12 w-12 rounded-full bg-gradient-to-r from-[#00A6FB] to-[#0582CA] p-1 shadow-md hover:shadow-lg transition-transform transform hover:scale-105">
                 <img
                   src={logo}
@@ -27,23 +28,30 @@ const ModernNavbar = () => {
                   className="h-full w-full object-contain rounded-full bg-white p-1"
                 />
               </div>
+              </button>
               <span className="ml-3 text-xl font-bold bg-gradient-to-r from-[#00A6FB] to-[#0582CA] bg-clip-text text-transparent">
                 BrandBoost
               </span>
+             
             </div>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-4">
-            {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-gray-600 hover:text-[#00A6FB] px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-              >
-                {item.name}
-              </a>
-            ))}
+                  
+                    
+                    <a href = {jobs} className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#00A6FB]" >
+                      Jobs
+                    </a>
+                    <a href = {posts} className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#00A6FB]">
+                      Posts
+                    </a>
+                    <a href = {requests} className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#00A6FB]">
+                      Requests
+                    </a>
+                    <a href = {ongoing} className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#00A6FB]">
+                      Ongoing
+                    </a>
 
             {/* Notifications */}
             <button className="p-2 text-gray-600 hover:text-[#00A6FB] rounded-full hover:bg-blue-50">
