@@ -6,15 +6,7 @@ import ServiceCard from '../components/ServiceCard';
 import WaveAnimation from "../components/WaveAnimation";
 
 const LandingPage = () => {
-  const popularCategories = [
-    { name: "Social Media Content", count: "2,145 experts" },
-    { name: "Blog Writing", count: "1,893 experts" },
-    { name: "SEO Content", count: "1,567 experts" },
-    { name: "Video Scripts", count: "945 experts" },
-    { name: "Email Marketing", count: "1,234 experts" },
-    { name: "Technical Writing", count: "876 experts" }
-  ];
-
+  
   return (
     <div className="min-h-screen bg-white bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CiAgPGZpbHRlciBpZD0ibm9pc2UiPgogICAgPGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNzUiIG51bU9jdGF2ZXM9IjIiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz4KICA8L2ZpbHRlcj4KICA8cmVjdCB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIGZpbHRlcj0idXJsKCNub2lzZSkiIG9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] bg-repeat">
       <ModernNavbar />
@@ -180,6 +172,7 @@ const LandingPage = () => {
     {/*Our Expert Creators*/}
     <section id="creators" class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
       <div class="text-center mb-16 animate__animated animate__fadeIn">
         <h2 class="text-3xl md:text-4xl font-bold text-[#00A6FB] mb-4">Our Expert Creators</h2>
         <p class="text-gray-600 max-w-2xl mx-auto">Join our network of talented professionals or find the perfect creator for your project</p>
@@ -238,55 +231,55 @@ const LandingPage = () => {
         </div>
 
         
-        <div class="bg-gray-100 rounded-xl p-12 animate__animated animate__fadeInRight h-full">
-          <div class="space-y-8">
-            <h3 class="text-2xl font-bold text-blue-500 mb-6">
-              Why Join Our Network?
-            </h3>
-            
-            <div class="flex items-center gap-4">
-              <div class="bg-blue-500/10 rounded-full p-3">
-                <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <h4 class="font-semibold text-blue-500">Competitive Rates</h4>
-                <p class="text-gray-900">Fair compensation for your expertise</p>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-4">
-              <div class="bg-blue-600/10 rounded-full p-3">
-                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <div>
-                <h4 class="font-semibold text-blue-600">Verified Projects</h4>
-                <p class="text-gray-900">Work with legitimate clients</p>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-4">
-              <div class="bg-blue-700/10 rounded-full p-3">
-                <svg class="w-6 h-6 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                </svg>
-              </div>
-              <div>
-                <h4 class="font-semibold text-blue-700">Growth Opportunities</h4>
-                <p class="text-gray-900">Expand your professional network</p>
-              </div>
-            </div>
-
-            <button class="w-full bg-blue-500 text-white py-3 rounded-full font-semibold hover:bg-blue-600 transition-colors duration-300 mt-8">
-              Join as Creator
-            </button>
-          </div>
-        </div>
+        <div class="bg-gray-100 bg-opacity-5 rounded-xl p-12 animate__animated animate__fadeInRight h-full">
+  <div class="space-y-8">
+    <h3 class="text-2xl font-bold text-[#0582CA] mb-16">
+      Why Join Our Network?
+    </h3>
+    
+    <div class="flex items-center gap-4">
+      <div class="bg-[#00A6FB]/10 rounded-full p-3">
+        <svg class="w-10 h-10 text-[#00A6FB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div>
+        <h4 class="font-semibold text-[#00A6FB]">Competitive Rates</h4>
+        <p class="text-[#051923]">Fair compensation for your expertise</p>
       </div>
     </div>
+
+    <div class="flex items-center gap-4">
+      <div class="bg-[#0582CA]/10 rounded-full p-3">
+        <svg class="w-10 h-10 text-[#0582CA]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+      </div>
+      <div>
+        <h4 class="font-semibold text-[#0582CA]">Verified Projects</h4>
+        <p class="text-[#051923]">Work with legitimate clients</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <div class="bg-[#006494]/10 rounded-full p-3">
+        <svg class="w-10 h-10 text-[#006494]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+        </svg>
+      </div>
+      <div>
+        <h4 class="font-semibold text-[#006494]">Growth Opportunities</h4>
+        <p class="text-[#051923]">Expand your professional network</p>
+      </div>
+    </div>
+
+    <button class="w-full bg-[#0582CA] text-white py-3 rounded-full font-semibold hover:bg-[#00A6FB] transition-colors duration-300 mt-8">
+      Join as Creator
+    </button>
+  </div>
+</div>
+</div>
+</div>
   </section>
 
 
@@ -337,18 +330,40 @@ const LandingPage = () => {
 
       {/* Creator CTA */}
       <div className="py-20 bg-gradient-to-r from-[#003554] to-[#006494]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-6">
-            Are You a Content Creator?
+        
+        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 inline-flex ml-25">
+          <h2 className="text-3xl font-bold text-white mb-6 ">
+            Are You a Content Creator?                    
           </h2>
+          <h2 className="text-3xl font-bold text-white mb-6 ml-auto mr-40">
+          Are you a Business looking for content?                   
+          </h2>
+          </div>
+
+          
+          <div className="flex max-w mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
+
           <p className="text-lg text-white opacity-90 mb-8">
             Join our community of professional creators and start earning doing what you love
           </p>
-          <button className="px-8 py-4 bg-white text-[#006494] rounded-lg font-semibold transition-all hover:bg-blue-50 inline-flex items-center">
+          <p className="text-lg text-white opacity-90 mb-8 ml-auto mr-10">
+            Leverage our community of professional creators to make quality content
+          </p>
+          </div>
+
+            <div className="flex max-w mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <button className="px-8 py-4 ml-40 bg-white text-[#006494] rounded-lg font-semibold transition-all hover:bg-blue-50 flex items-center">
             Become a Creator
             <ArrowRight className="ml-2 h-5 w-5" />
           </button>
-        </div>
+          <button className="px-8 py-4 ml-auto mr-50 bg-white text-[#006494] rounded-lg font-semibold transition-all hover:bg-blue-50 flex ">
+            Join as a Business
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </button>
+          </div>
+
+       
       </div>
 
       {/* Trust Indicators */}
