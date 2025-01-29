@@ -161,7 +161,6 @@ businessRouter.get(
 );
 
 // THE BUSINESS APPROVING THE PARTICULAR CANDIDATE FOR THE JOB
-
 businessRouter.post(
   "/dashboard/requests/:jobId/approve",
   businessAuthMiddleware,
@@ -169,28 +168,44 @@ businessRouter.post(
     try {
       const jobId = req.params.jobId;
       const approvedId = req.body.approvedId;
+
+      if (!approvedId) {
+        return res.status(400).json({ message: "Approved candidate ID is required" });
+      }
+
       const job = await jobModel.findById(jobId);
       if (!job) {
         return res.status(404).json({ message: "Job not found" });
       }
-      if (job.approvedCandidate === null)
-        return res
-          .status(500)
-          .json({ message: "Job has already been assigned to a candidate" });
+
+      if (job.approvedCandidate !== null) {
+        return res.status(400).json({ message: "Job has already been assigned to a candidate" });
+      }
+
       job.approvedCandidate = approvedId;
       await job.save();
+
       const request = await requestModel.findOne({
         jobId: jobId,
         appliedCandidate: approvedId,
       });
+
+      if (!request) {
+        return res.status(404).json({ message: "Request not found" });
+      }
+
       request.isApproved = true;
       await request.save();
+
       res.status(200).json({ message: "Job approved successfully" });
+
     } catch (err) {
-      res.json({ error: err });
+      console.error("Error approving job:", err);
+      res.status(500).json({ error: err.message || "Internal Server Error" });
     }
   }
 );
+
 businessRouter.get(
   "/dashboard/requests",
   businessAuthMiddleware,

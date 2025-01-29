@@ -81,6 +81,7 @@ const Requests = () => {
 
       if (!response.ok) {
         alert(response.message);
+        console.log(body);
         throw new Error("Failed to approve applicant");
       }
       const data = await response.json();

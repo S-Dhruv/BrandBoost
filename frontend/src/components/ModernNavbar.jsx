@@ -43,9 +43,7 @@ const ModernNavbar = ({jobs , posts , requests , ongoing}) => {
                     <a href = {jobs} className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#00A6FB]" >
                       Jobs
                     </a>
-                    <a href = {posts} className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#00A6FB]">
-                      Posts
-                    </a>
+                    
                     <a href = {requests} className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#00A6FB]">
                       Requests
                     </a>
