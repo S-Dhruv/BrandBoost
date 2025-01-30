@@ -27,7 +27,7 @@ const BusinessLogin = () => {
       localStorage.setItem("isLogin", "true");
       localStorage.setItem("token", data.token);
 
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      await new Promise(resolve => setTimeout(resolve, ));
 
       nav("/business/dashboard", { replace: true });
     } else {
