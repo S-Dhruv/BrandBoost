@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { SocketContext } from "../../util/SocketProvider";
+import  WaveDecoration  from "../../components/WaveDecoration";
+import ModernNavbar from "../../components/ModernNavbar";
 import shortId from "shortid";
 
 const Jobs = () => {
@@ -61,6 +63,8 @@ const Jobs = () => {
 
   return (
     <div className="min-h-screen bg-[#081A42] relative overflow-hidden">
+      <ModernNavbar />
+      <WaveDecoration />
       {/* Animated background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-0 w-full h-1/2 bg-gradient-to-b from-[#081A42] via-[#0F3A68] to-transparent"></div>

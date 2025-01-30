@@ -23,29 +23,32 @@ const userValidationSchema = z
     path: ["confirmPassword"],
   });
 
-businessRouter.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  const user = await businessModel.findOne({ email: email });
-  console.log(user);
-  const result = bcrypt.compare(password, user.password);
-  if (!result) {
-    res.status(404).send("Invalid email or password");
-  }
-  console.log("Correct Password");
-  const token = jwt.sign(
-    {
-      userId: user._id,
-    },
-    process.env.JWT_BUSINESS_SECRET,
-    { expiresIn: "1d" }
-  );
-  console.log("Token: " + token);
-  res.cookie("token", token, {
-    maxAge: 7 * 24 * 60 * 60 * 1000,
+  businessRouter.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+  
+    try {
+      const user = await businessModel.findOne({ email: email });
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      const result = await bcrypt.compare(password, user.password);
+      if (!result) {
+        return res.status(400).json({ message: "Invalid email or password" });
+      }
+  
+      const token = jwt.sign(
+        { userId: user._id },
+        process.env.JWT_BUSINESS_SECRET,
+        { expiresIn: "1d" }
+      );
+  
+      res.json({ token, message: "Login successful", role: "business" });
+    } catch (error) {
+      console.error("Login error:", error);
+      res.status(500).json({ message: "An error occurred during login" });
+    }
   });
-  console.log("Cookie has been set successfully");
-  res.json({ token, message: "Login successful", role: "business" });
-});
 
 businessRouter.post("/signup", async (req, res) => {
   const validation = userValidationSchema.safeParse(req.body);
