@@ -2,7 +2,7 @@ import React from 'react'
 import CreatorSidebar from './CreatorSidebar';
 import ModernNavbar from '../../components/ModernNavbar';
 
-
+import Gemini from "./Gemini"
 const links = {
   business: {
     jobs: "/business/dashboard/jobs",
@@ -28,7 +28,13 @@ const CreatorDashboard = () => {
   const userLinks = (userType === "creator" ? links.creator : links.business);
 
   return (
-        <ModernNavbar {...userLinks}/>
+<>
+      <ModernNavbar {...userLinks}/>
+        <br></br>
+        <br></br>
+        <br></br>
+        <Gemini />
+</>
   )
 }
 
