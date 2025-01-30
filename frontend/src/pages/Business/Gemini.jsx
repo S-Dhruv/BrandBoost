@@ -264,24 +264,24 @@ const MarketingAdvisor = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2">Marketing Strategy Advisor</h1>
+    <div className="max-w-7xl mx-auto p-6 shadow-[0_0_20px_5px_rgba(0,166,251,0.5)]">
+      <div className="text-center mb-8 ">
+        <h1 className="text-2xl font-bold mb-6 text-[#00A6FB]">Marketing Strategy Advisor</h1>
         <p className="text-gray-600">
           Get personalized marketing strategies for your business
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start ">
         <div>
           <form
             onSubmit={handleSubmit}
-            className="bg-white p-6 rounded-lg shadow-md space-y-6 sticky top-6">
+            className="bg-white p-6 rounded-lg shadow-md space-y-6 sticky top-6 shadow-[0_0_20px_5px_rgba(0,166,251,0.5)]">
             {FORM_FIELDS.map((field) => (
               <div key={field.id}>
                 <label
                   htmlFor={field.id}
-                  className="block text-sm font-medium text-gray-700 mb-1">
+                  className="block text-sm font-medium text-gray-700 mb-1 ">
                   {field.label}{" "}
                   {field.required && <span className="text-red-500">*</span>}
                 </label>
@@ -289,7 +289,7 @@ const MarketingAdvisor = () => {
                   <textarea
                     id={field.id}
                     required={field.required}
-                    className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[100px]"
+                    className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[100px] "
                     onChange={handleInputChange}
                     value={formData[field.id] || ""}
                   />
@@ -298,7 +298,7 @@ const MarketingAdvisor = () => {
                     type={field.type}
                     id={field.id}
                     required={field.required}
-                    className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent "
                     onChange={handleInputChange}
                     value={formData[field.id] || ""}
                   />
@@ -309,7 +309,7 @@ const MarketingAdvisor = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed flex items-center justify-center gap-2 ">
               {loading ? (
                 <>
                   <Loader2 className="animate-spin" size={20} />
@@ -325,14 +325,14 @@ const MarketingAdvisor = () => {
         <div className="h-screen sticky top-6 overflow-hidden">
           <div className="h-full overflow-y-auto pr-4">
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-md p-4 flex items-start gap-3 mb-6">
+              <div className="bg-red-50 border border-red-200 rounded-md p-4 flex items-start gap-3 mb-6 ">
                 <AlertCircle className="text-red-500 flex-shrink-0" />
                 <p className="text-red-700">{error}</p>
               </div>
             )}
 
             {response && (
-              <div className="bg-green-50 border border-green-200 rounded-md p-4 flex items-start gap-3 mb-6">
+              <div className="bg-green-50 border border-green-200 rounded-md p-4 flex items-start gap-3 mb-6 ">
                 <CheckCircle2 className="text-green-500 flex-shrink-0" />
                 <p className="text-green-700">
                   Strategy generated successfully!

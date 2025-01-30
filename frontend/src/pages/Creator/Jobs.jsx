@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import WaveDecoration from '../../components/WaveDecoration';
+import ModernNavbar from '../../components/ModernNavbar';
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -64,6 +66,8 @@ const Jobs = () => {
 
   return (
     <div className="min-h-screen bg-[#081A42] relative overflow-hidden">
+      <ModernNavbar/>
+      <WaveDecoration/>
       {/* Animated background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-0 w-full h-1/2 bg-gradient-to-b from-[#081A42] via-[#0F3A68] to-transparent"></div>
@@ -74,7 +78,7 @@ const Jobs = () => {
 
       {/* Main content */}
       <div className="relative z-10 container mx-auto px-4 py-8">
-        <h1 className="text-center pt-8 text-4xl font-bold mb-12 bg-gradient-to-r from-[#42A4E0] to-[#1D78A0] text-transparent bg-clip-text">
+        <h1 className="text-center mt-10 pt-8 text-4xl font-bold mb-12 bg-gradient-to-r from-[#42A4E0] to-[#1D78A0] text-transparent bg-clip-text">
           Jobs Tailored for You
         </h1>
 

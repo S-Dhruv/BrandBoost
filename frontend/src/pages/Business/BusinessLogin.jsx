@@ -1,18 +1,14 @@
-import React from "react";;
-import { useRef,useState } from "react";;
-import { useNavigate } from "react-router-dom";;
+import React from "react";
+import { useRef,useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ModernNavbar from '../../components/ModernNavbar';
 const BusinessLogin = () => {
   const emailRef = useRef(null);
   const passRef = useRef(null);
   const nav = useNavigate();
-  const [loading, setLoading] = useState(false);
 
-const handleLogin = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-
-  try {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     const email = emailRef.current.value;
     const password = passRef.current.value;
 
@@ -37,13 +33,35 @@ const handleLogin = async (e) => {
     } else {
       console.error("Login failed:", data.message);
     }
-  } catch (error) {
-    console.error("Login error:", error);
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      const response = await fetch("http://localhost:3000/business/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
+      const data = await response.json();
+      if (data.message === "Login successful") {
+        console.log("Login Success");
+        const role = data.role;
+        console.log(role);
+        localStorage.setItem("role", role);
+        localStorage.setItem("isLogin", true);
+        localStorage.setItem("token", data.token);
+        nav("/business/dashboard");
+      } else {
+        alert("Login failed: " + (data.message || "Invalid credentials"));
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("An error occurred during login. Please try again.");
+    }
+  }
+
+
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#081A42] pt-20">
       <ModernNavbar />
@@ -112,6 +130,6 @@ const handleLogin = async (e) => {
       </div>
     </div>
   );
-}
 
+}
 export default BusinessLogin;

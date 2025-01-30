@@ -3,6 +3,8 @@ import { SocketContext } from '../../util/SocketProvider';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import OngoingNew from './OngoingNew';
+import  WaveDecoration  from "../../components/WaveDecoration";
+import  ModernNavbar from "../../components/ModernNavbar";
 
 const Ongoing = () => {
   const nav = useNavigate();
@@ -40,8 +42,12 @@ const Ongoing = () => {
   };
 
   return (
+
     <div className="min-h-screen bg-[#081A42] flex items-center justify-center gap-48 relative overflow-hidden">
       {/* Animated background elements */}
+      <ModernNavbar />
+      <WaveDecoration />
+      
 
       {/* Main content */}
       <div className="relative z-10 w-full max-w-md px-4">
