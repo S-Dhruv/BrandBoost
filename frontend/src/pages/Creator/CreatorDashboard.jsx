@@ -14,7 +14,7 @@ const links = {
   creator: {
     jobs: "/creator/dashboard/jobs",
     posts: "/creator/dashboard/post",
-    requests: "/creator/dashboard/requests",
+    requests: undefined,
     ongoing: "/creator/dashboard/ongoing"
     
   }

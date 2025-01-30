@@ -11,7 +11,7 @@ const ModernNavbar = ({jobs , posts , requests , ongoing}) => {
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-white shadow-lg z-50">
+    <nav className="fixed top-0 left-0 right-0 bg-white shadow-lg z-9999">
       <div className="w-full px-2">
         <div className="flex justify-between h-16">
           {/* Logo and Brand */}
@@ -40,16 +40,16 @@ const ModernNavbar = ({jobs , posts , requests , ongoing}) => {
           <div className="hidden md:flex md:items-center md:space-x-4">
                   
                     
-                    <a href = {jobs} className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#00A6FB]" >
+                   {jobs && (<a href = {jobs} className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#00A6FB]" >
                       Jobs
-                    </a>
+                    </a>)}
                     
-                    <a href = {requests} className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#00A6FB]">
+                    {requests && (<a href = {requests} className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#00A6FB]">
                       Requests
-                    </a>
-                    <a href = {ongoing} className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#00A6FB]">
+                    </a>)}
+                    {ongoing && (<a href = {ongoing} className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#00A6FB]">
                       Ongoing
-                    </a>
+                    </a>)}
 
             {/* Notifications */}
             <button className="p-2 text-gray-600 hover:text-[#00A6FB] rounded-full hover:bg-blue-50">

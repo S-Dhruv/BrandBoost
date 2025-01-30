@@ -1,6 +1,6 @@
-import React from "react";;
-import { useRef,useState } from "react";;
-import { useNavigate } from "react-router-dom";;
+import React from "react";
+import { useRef,useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ModernNavbar from '../../components/ModernNavbar';
 const BusinessLogin = () => {
   const emailRef = useRef(null);
@@ -32,7 +32,7 @@ const BusinessLogin = () => {
       nav("/business/dashboard", { replace: true });
     } else {
       console.error("Login failed:", data.message);
-
+    }
     try {
       const response = await fetch("http://localhost:3000/business/login", {
         method: "POST",
@@ -58,14 +58,9 @@ const BusinessLogin = () => {
       console.error("Login error:", error);
       alert("An error occurred during login. Please try again.");
     }
-  } catch (error) {
-    console.error("Login error:", error);
-  } finally {
-    setLoading(false);
   }
-};
 
-  }
+
   
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#081A42] pt-20">
@@ -135,6 +130,6 @@ const BusinessLogin = () => {
       </div>
     </div>
   );
-}
 
+}
 export default BusinessLogin;
