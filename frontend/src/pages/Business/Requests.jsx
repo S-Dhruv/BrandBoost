@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import  WaveDecoration  from "../../components/WaveDecoration";
+import {toast} from "sonner";
 
 const RequestsBackground = () => (
   <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -71,7 +72,7 @@ const Requests = () => {
         [jobId]: data.detailsOfCandidates || [],
       }));
     } catch (err) {
-      console.error("Error fetching applicants:", err);
+      toast.error("Error fetching applicants:");
       setError((prev) => ({ ...prev, [jobId]: err.message }));
     } finally {
       setLoading((prev) => ({ ...prev, [jobId]: false }));
@@ -94,14 +95,13 @@ const Requests = () => {
 
       if (!response.ok) {
         const data = await response.json();
-        alert(data.message);
         throw new Error("Failed to approve applicant");
       }
       const data = await response.json();
-      alert("Applicant approved successfully");
+      toast.success("Applicant approved successfully");
       handleViewApplicants(jobId);
     } catch (err) {
-      console.error("Error approving applicant:", err);
+      toast.error("Error approving applicant:", err);
     }
   };
 

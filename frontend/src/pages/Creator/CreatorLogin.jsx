@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ModernNavbar from '../../components/ModernNavbar';
-
+import {toast} from "sonner";
 const CreatorLogin = () => {
   const emailRef = useRef(null);
   const passRef = useRef(null);
@@ -34,9 +34,11 @@ const CreatorLogin = () => {
           localStorage.setItem("role", role);
           localStorage.setItem("isLogin", true);
           localStorage.setItem("token", data.token);
+          toast.success("Logged In");
           nav("/creator/dashboard");
         }
       } else {
+        toast.success("Log in failed");
         console.log("Login failed:", data.message);
       }
     } catch (err) {

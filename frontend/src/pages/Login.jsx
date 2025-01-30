@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaBriefcase, FaUserAstronaut } from 'react-icons/fa';
 import ModernNavbar from '../components/ModernNavbar';
-
+import {toast} from "sonner";
 const Login = () => {
   const navigate = useNavigate();
   const handleBusinessLogin = () => {
+    toast.success("Joined business login");
     navigate('/business/login');
   };
   const handleCreatorLogin = () => {
+    toast.success("Joined creator login");
     navigate('/creator/login');
   };
 

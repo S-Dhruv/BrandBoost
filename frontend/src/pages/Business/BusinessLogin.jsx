@@ -1,6 +1,8 @@
 import React from "react";
 import { useRef,useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {toast} from "sonner";
+
 import ModernNavbar from '../../components/ModernNavbar';
 const BusinessLogin = () => {
   const emailRef = useRef(null);
@@ -26,11 +28,14 @@ const BusinessLogin = () => {
       localStorage.setItem("role", data.role);
       localStorage.setItem("isLogin", "true");
       localStorage.setItem("token", data.token);
-
+      toast.success("Logged In");
+      
       await new Promise(resolve => setTimeout(resolve, ));
 
       nav("/business/dashboard", { replace: true });
     } else {
+      toast.error("Not logged In");
+
       console.error("Login failed:", data.message);
     }
     try {
@@ -45,6 +50,7 @@ const BusinessLogin = () => {
       const data = await response.json();
       if (data.message === "Login successful") {
         console.log("Login Success");
+
         const role = data.role;
         console.log(role);
         localStorage.setItem("role", role);

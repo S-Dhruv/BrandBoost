@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import ModernNavbar from '../../components/ModernNavbar';
+import {toast} from "sonner";
 
 const WaitingApproval = () => {
     const emailRef = useRef(null);
@@ -22,13 +23,12 @@ const WaitingApproval = () => {
 
             const data = await response.json();
             if (data.message === "Approved") {
-                alert("You have been approved");
+                toast.success("You have been approved");
             } else {
-                alert("Oops, you aren't approved");
+                toast.error("Oops, you aren't approved");
             }
         } catch (error) {
-            console.error("Error:", error);
-            alert("An error occurred. Please try again.");
+            toast.error("An error occurred. Please try again.");
         } finally {
             setIsChecking(false);
         }

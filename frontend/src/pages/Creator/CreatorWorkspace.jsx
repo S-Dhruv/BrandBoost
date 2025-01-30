@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { SocketContext } from '../../util/SocketProvider';
 import { useNavigate } from 'react-router-dom';
+import {toast} from "sonner";
 
 const CreatorWorkspace = () => {
   const nav = useNavigate();
@@ -57,6 +58,7 @@ const CreatorWorkspace = () => {
       room,
       message: messageRef.current.value
     });
+    toast.success("Message sent!");
     messageRef.current.value = '';
   };
 

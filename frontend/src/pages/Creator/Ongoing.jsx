@@ -1,10 +1,10 @@
 import React, { useContext, useRef, useEffect } from 'react';
 import { SocketContext } from '../../util/SocketProvider';
 import { useNavigate } from 'react-router-dom';
-import { toast } from "react-toastify";
 import OngoingNew from './OngoingNew';
 import  WaveDecoration  from "../../components/WaveDecoration";
 import  ModernNavbar from "../../components/ModernNavbar";
+import {toast} from "sonner";
 
 const Ongoing = () => {
   const nav = useNavigate();
@@ -34,9 +34,10 @@ const Ongoing = () => {
       socket.emit("join-room", { room });
       localStorage.setItem("room", room);
       console.log(`Joining room: ${room}`);
+      toast.success("Joined Room");
       nav("/creator/dashboard/ongoing/workspace");
     } else {
-      console.error("Room code is required");
+      toast.error("Room code is required");
       nav("/creator/dashboard/ongoing");
     }
   };

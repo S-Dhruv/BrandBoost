@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Loader2 } from "lucide-react";
+import {toast} from "sonner";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
@@ -24,11 +25,11 @@ const TodoList = () => {
       if (Array.isArray(data)) {
         setTodos(data);
       } else {
-        console.error('Received data is not an array:', data);
+        toast.error('Received data is not an array:');
         setError('Received data is not an array');
       }
     } catch (err) {
-      console.error('Failed to fetch todos:', err);
+      toast.error('Failed to fetch todos:');
       setError('Failed to fetch todos');
     } finally {
       setLoading(false);
@@ -53,9 +54,10 @@ const TodoList = () => {
       }
       const data = await response.json();
       setTodos([data, ...todos]);
+      toast.success("Todo added");
       setNewTodo('');
     } catch (err) {
-      console.error('Failed to add todo:', err);
+      toast.error('Failed to add todo:');
       setError('Failed to add todo');
     } finally {
       setLoading(false);
@@ -79,7 +81,7 @@ const TodoList = () => {
       const updatedTodo = await response.json();
       setTodos(todos.map(todo => todo._id === id ? updatedTodo : todo));
     } catch (err) {
-      console.error('Failed to update todo:', err);
+      toast.error('Failed to update todo:');
       setError('Failed to update todo');
     } finally {
       setLoading(false);

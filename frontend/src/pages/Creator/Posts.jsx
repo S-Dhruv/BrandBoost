@@ -29,12 +29,12 @@ const Posts = () => {
       setPosts([]);
     }
   };
-
+  
   // Handle input changes for the new post form
   const handleChange = (e) => {
     setNewPost({ ...newPost, [e.target.name]: e.target.value });
   };
-
+  
   // Handle form submission to create a new post
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,9 +47,10 @@ const Posts = () => {
         }
       );
       setPosts((prevPosts) => [...prevPosts, response.data]);
+      toast.success("Post added")
       setNewPost({ title: "", description: "" });
     } catch (error) {
-      console.error("Error creating post:", error);
+      toast.error("Error creating post:");
     }
   };
 

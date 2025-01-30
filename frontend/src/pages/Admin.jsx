@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import ModernNavbar from '../components/ModernNavbar';
 import  WaveDecoration  from "../components/WaveDecoration";
+import {toast} from "sonner";
 
 const Admin = () => {
   const emailRef = useRef(null);
@@ -20,7 +21,7 @@ const Admin = () => {
         },
         body: JSON.stringify({ email, isApproved: true }), // Pass the email value, not the ref
       });
-
+      toast.success("Approved!");
       const data = await response.json();
       console.log(data);
     } catch (err) {
@@ -46,6 +47,7 @@ const Admin = () => {
 
       const data = await response.json();
       console.log(data);
+      toast.success("Approved!");
     } catch (err) {
       console.log(err);
     }

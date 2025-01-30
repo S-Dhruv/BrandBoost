@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import WaveDecoration from '../../components/WaveDecoration';
 import ModernNavbar from '../../components/ModernNavbar';
-
+import {toast} from "sonner";
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -50,7 +50,7 @@ const Jobs = () => {
       );
       const message = await response.json();
       if (!response.ok) throw new Error(message);
-      alert("Successfully applied for job");
+      toast.success("Successfully applied for job");
     } catch (err) {
       console.error(err);
     }

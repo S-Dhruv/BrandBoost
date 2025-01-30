@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import ModernNavbar from "../../components/ModernNavbar";
 import { useNavigate } from "react-router-dom";
-
+import {toast} from "sonner";
 
 const BusinessSignUp = () => {
   const emailRef = useRef(null);
@@ -44,17 +44,20 @@ const BusinessSignUp = () => {
     console.log(email)
     console.log(username)
     console.log(password)
-    
     if(data.message === "User successfully created"){
       console.log("User successfully created");
+      toast.success("Signed up");
       nav("/business/login", { replace: true });
-    }else{
+    } else {
+      toast.error(data.message || "Sign up failed");
       console.log("failed")
     }
-  }catch(error){
-    console.log(error)
+    } 
+    catch(err){
+      console.log(err);
+    }
   }
-}
+
   
  
 

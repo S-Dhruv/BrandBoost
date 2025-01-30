@@ -3,6 +3,7 @@ import { SocketContext } from "../../util/SocketProvider";
 import  WaveDecoration  from "../../components/WaveDecoration";
 import ModernNavbar from "../../components/ModernNavbar";
 import shortId from "shortid";
+import {toast} from "sonner";
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -52,7 +53,7 @@ const Jobs = () => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
 
-      alert("Job Posted Successfully");
+      toast.success("Job Posted Successfully");
       setJobs((prevJobs) => [...prevJobs, { ...data, roomCode }]);
       setTitle("");
       setDescription("");

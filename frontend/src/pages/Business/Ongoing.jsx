@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import OngoingNew from "./OngoingNew";
 import ModernNavbar from '../../components/ModernNavbar';
 import  WaveDecoration  from "../../components/WaveDecoration";
+import {toast} from "sonner";
 
 const Ongoing = () => {
   const nav = useNavigate();
@@ -27,10 +28,10 @@ const Ongoing = () => {
       socket.emit("join-room", { room });
       console.log(`Joining room: ${room}`);
       localStorage.setItem('room',room);
-
+      toast.success("Joined room");
       nav('/business/dashboard/ongoing/workspace');
     } else {
-      console.error("Room code is required");
+      toast.error("Error");
     }
   };
 

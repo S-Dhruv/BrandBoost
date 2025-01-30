@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import ModernNavbar from "../../components/ModernNavbar";
 import { useNavigate } from "react-router-dom";
-
+import {toast} from "sonner";
 const CreatorSignUp = () => {
   const emailRef = useRef(null);
   const usernameRef = useRef(null);
@@ -44,9 +44,11 @@ const CreatorSignUp = () => {
       
       if(data.message === "User successfully created"){
         console.log("User successfully created");
+        toast.success("Signed In");
         nav("/creator/login", { replace: true });
       }else{
         console.log("failed")
+        toast.error("Cant sign in");
       }
     }catch(error){
       console.log(error)
