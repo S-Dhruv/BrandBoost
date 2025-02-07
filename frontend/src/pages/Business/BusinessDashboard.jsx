@@ -43,7 +43,7 @@ const BusinessDashboard = () => {
           <p className="text-gray-600 mb-8">
             Manage your jobs, posts, requests, and ongoing projects seamlessly.
           </p>
-
+    
           {/* Gemini component */}
           <div className="bg-white/20 rounded-lg p-6 ">
             {/* Add black outlines to input boxes */}
