@@ -1,5 +1,11 @@
 BrandBoost is a platform that connects **businesses** with **creators** to collaborate on marketing campaigns. It provides a seamless workflow where businesses can post job listings, creators can apply for jobs, and both parties can communicate in real-time with AI-driven marketing assistance.
 
+## Contributors for this project:
+1. Dhruv S Shah - https://github.com/S-Dhruv
+2. Ananya Papula - https://github.com/Ananya54321
+3. Soham Chitimali - https://github.com/sohamchitimali
+4. Tina Pudari - https://github.com/tinap98
+
 ## Features
 
 ### 1. User Roles
@@ -62,12 +68,6 @@ BrandBoost is a platform that connects **businesses** with **creators** to colla
    npm start
    ```
 
-## Contributing
-We welcome contributions! If you'd like to improve **BrandBoost**, feel free to open issues and submit pull requests.
-
-## License
-This project is licensed under the MIT License.
-
 ## Contact
-For any queries or suggestions, reach out to us at [your-email@example.com].
+For any queries or suggestions, reach out to us at [dhruvsshah171@example.com].
 
