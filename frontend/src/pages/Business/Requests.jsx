@@ -92,7 +92,7 @@ const Requests = () => {
           body: JSON.stringify({ approvedId: applicantId }),
         }
       );
-
+      console.log(response)
       if (!response.ok) {
         const data = await response.json();
         throw new Error("Failed to approve applicant");

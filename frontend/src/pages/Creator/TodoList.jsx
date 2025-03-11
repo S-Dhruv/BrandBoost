@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
-import {toast} from "sonner";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
-  const [newTodo, setNewTodo] = useState('');
+  const [newTodo, setNewTodo] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
-  const API_URL = 'http://localhost:3000/api';
+  const API_URL = "http://localhost:3000/api";
+  const nav = useNavigate();
 
   useEffect(() => {
     fetchTodos();
@@ -19,18 +21,18 @@ const TodoList = () => {
       setLoading(true);
       const response = await fetch(`${API_URL}/todos`);
       if (!response.ok) {
-        throw new Error('Failed to fetch todos');
+        throw new Error("Failed to fetch todos");
       }
       const data = await response.json();
       if (Array.isArray(data)) {
         setTodos(data);
       } else {
-        toast.error('Received data is not an array:');
-        setError('Received data is not an array');
+        toast.error("Received data is not an array:");
+        setError("Received data is not an array");
       }
     } catch (err) {
-      toast.error('Failed to fetch todos:');
-      setError('Failed to fetch todos');
+      toast.error("Failed to fetch todos:");
+      setError("Failed to fetch todos");
     } finally {
       setLoading(false);
     }
@@ -43,22 +45,22 @@ const TodoList = () => {
     try {
       setLoading(true);
       const response = await fetch(`${API_URL}/todos`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ text: newTodo }),
       });
       if (!response.ok) {
-        throw new Error('Failed to add todo');
+        throw new Error("Failed to add todo");
       }
       const data = await response.json();
+      toast.success("Added a todo");
       setTodos([data, ...todos]);
-      toast.success("Todo added");
-      setNewTodo('');
+      setNewTodo("");
     } catch (err) {
-      toast.error('Failed to add todo:');
-      setError('Failed to add todo');
+      toast.error("Failed to add todo:");
+      setError("Failed to add todo");
     } finally {
       setLoading(false);
     }
@@ -67,25 +69,29 @@ const TodoList = () => {
   const toggleTodoCompletion = async (id) => {
     try {
       setLoading(true);
-      const todoToUpdate = todos.find(todo => todo._id === id);
+      const todoToUpdate = todos.find((todo) => todo._id === id);
       const response = await fetch(`${API_URL}/todos/${id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ completed: !todoToUpdate.completed }),
       });
       if (!response.ok) {
-        throw new Error('Failed to update todo');
+        throw new Error("Failed to update todo");
       }
       const updatedTodo = await response.json();
-      setTodos(todos.map(todo => todo._id === id ? updatedTodo : todo));
+      setTodos(todos.map((todo) => (todo._id === id ? updatedTodo : todo)));
     } catch (err) {
-      toast.error('Failed to update todo:');
-      setError('Failed to update todo');
+      toast.error("Failed to update todo:");
+      setError("Failed to update todo");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleback = () => {
+    nav("/creator/dashboard/ongoing/workspace");
   };
 
   return (
@@ -131,7 +137,11 @@ const TodoList = () => {
               disabled={loading}
               className="w-full bg-[#42A4E0] text-white py-4 rounded-2xl hover:bg-[#1D78A0] focus:outline-none transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             >
-              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Add Todo'}
+              {loading ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                "Add Todo"
+              )}
             </button>
           </form>
 
@@ -141,27 +151,40 @@ const TodoList = () => {
             </div>
           ) : (
             <ul className="mt-8 space-y-3">
-              {Array.isArray(todos) && todos.map((todo) => (
-                <li
-                  key={todo._id}
-                  className="flex items-center justify-between p-4 bg-[#F9FAFB] rounded-2xl border-2 border-[#328AB0]/20 hover:border-[#42A4E0]/50 transition-all duration-300 group"
-                >
-                  <span
-                    className={`${todo.completed ? 'line-through text-[#A1C6D2]' : 'text-[#081A42]'} cursor-pointer`}
-                    onClick={() => toggleTodoCompletion(todo._id)}
+              {Array.isArray(todos) &&
+                todos.map((todo) => (
+                  <li
+                    key={todo._id}
+                    className="flex items-center justify-between p-4 bg-[#F9FAFB] rounded-2xl border-2 border-[#328AB0]/20 hover:border-[#42A4E0]/50 transition-all duration-300 group"
                   >
-                    {todo.text}
-                  </span>
-                  <button
-                    onClick={() => toggleTodoCompletion(todo._id)}
-                    className="px-4 py-2 bg-green-500 text-white text-sm rounded-xl hover:bg-green-600 focus:outline-none transition-colors duration-300"
-                  >
-                    {todo.completed ? 'Undo' : 'Complete'}
-                  </button>
-                </li>
-              ))}
+                    <span
+                      className={`${
+                        todo.completed
+                          ? "line-through text-[#A1C6D2]"
+                          : "text-[#081A42]"
+                      } cursor-pointer`}
+                      onClick={() => toggleTodoCompletion(todo._id)}
+                    >
+                      {todo.text}
+                    </span>
+                    <button
+                      onClick={() => toggleTodoCompletion(todo._id)}
+                      className="px-4 py-2 bg-green-500 text-white text-sm rounded-xl hover:bg-green-600 focus:outline-none transition-colors duration-300"
+                    >
+                      {todo.completed ? "Undo" : "Complete"}
+                    </button>
+                  </li>
+                ))}
             </ul>
           )}
+
+          {/* Back Button */}
+          <button
+            onClick={handleback}
+            className="mt-6 w-full bg-[#42A4E0] text-white py-4 rounded-2xl hover:bg-[#1D78A0] focus:outline-none transition-colors duration-300 flex items-center justify-center"
+          >
+            Back
+          </button>
         </div>
       </div>
     </div>

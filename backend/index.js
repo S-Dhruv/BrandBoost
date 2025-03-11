@@ -12,25 +12,25 @@ const PORT = 3000;
 const creatorModel = require("./models/creatorSchema");
 const businessModel = require("./models/businessSchema");
 const jobModel = require("./models/jobSchema");
-const Todo = require("./models/todoSchema")
+const Todo = require("./models/todoSchema");
 const creatorAuthMiddleware = require("./middleware/creatorAuth");
 const businessAuthMiddleware = require("./middleware/businessAuth");
 const http = require("http");
-const {Server} = require("socket.io");
+const { Server } = require("socket.io");
 const jwt = require("jsonwebtoken");
 
 const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", 
+    origin: "*",
     credentials: true,
   },
 });
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "*",
     credentials: true,
   })
 );
@@ -38,10 +38,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-
-
 let rooms = {};
-let todo ={};
+let todo = {};
 // Routes
 
 app.use("/business", businessRouter);
@@ -78,13 +76,13 @@ app.post("/admin/approve/", async (req, res) => {
 });
 app.post("/admin/waiting", async (req, res) => {
   try {
-    const { email } = req.body; 
+    const { email } = req.body;
 
     if (!email) {
       return res.status(400).json({ message: "Email is required" });
     }
 
-    const creator = await creatorModel.findOne({ email }); 
+    const creator = await creatorModel.findOne({ email });
 
     if (!creator) {
       return res.status(404).json({ message: "Creator not found" });
@@ -116,7 +114,7 @@ io.use(async (socket, next) => {
       decoded = jwt.verify(token, process.env.JWT_CREATOR_SECRET);
       user = await creatorModel.findById(decoded.userId);
       if (user) {
-        socket.userType = 'creator';
+        socket.userType = "creator";
       }
     } catch (e) {
       // If creator verification fails, try business token
@@ -124,7 +122,7 @@ io.use(async (socket, next) => {
         decoded = jwt.verify(token, process.env.JWT_BUSINESS_SECRET);
         user = await businessModel.findById(decoded.userId);
         if (user) {
-          socket.userType = 'business';
+          socket.userType = "business";
         }
       } catch (e2) {
         return next(new Error("Authentication error: Invalid token"));
@@ -139,7 +137,7 @@ io.use(async (socket, next) => {
     // Attach user info to socket
     socket.userId = decoded.userId;
     socket.username = user.username;
-    
+
     console.log(`User connected: ${user.username} (${socket.userType})`);
     next();
   } catch (err) {
@@ -154,37 +152,34 @@ io.on("connection", (socket) => {
   socket.on("join-room", async ({ room }) => {
     try {
       if (!room) {
-        socket.emit("error-message",{
-          status:"404",
-          message:"Room code is required"
+        socket.emit("error-message", {
+          status: "404",
+          message: "Room code is required",
         });
-        
       }
 
       // Verify room access based on user type
-      if (socket.userType === 'business') {
-        const job = await jobModel.findOne({ 
+      if (socket.userType === "business") {
+        const job = await jobModel.findOne({
           roomCode: room,
-          creatorId: socket.userId 
+          creatorId: socket.userId,
         });
         if (!job) {
-          socket.emit("error-message",{
-            status:"404",
-            message:"Room code is required"
+          socket.emit("error-message", {
+            status: "404",
+            message: "Room code is required",
           });
-         
         }
-      } else if (socket.userType === 'creator') {
-        const job = await jobModel.findOne({ 
+      } else if (socket.userType === "creator") {
+        const job = await jobModel.findOne({
           roomCode: room,
-          appliedCandidates: socket.userId 
+          appliedCandidates: socket.userId,
         });
         if (!job) {
-          socket.emit("error-message",{
-            status:"404",
-            message:"Room code is required"
+          socket.emit("error-message", {
+            status: "404",
+            message: "Room code is required",
           });
-          
         }
       }
 
@@ -192,30 +187,32 @@ io.on("connection", (socket) => {
       if (!rooms[room]) {
         rooms[room] = {
           messages: [],
-          users: []
+          users: [],
         };
       }
 
       // Add user to room
       const userInfo = {
         username: socket.username,
-        userType: socket.userType
+        userType: socket.userType,
       };
       rooms[room].users.push(userInfo);
-      
+
       // Join the socket room
       socket.join(room);
-      
+
       // Send room history to joining user
       socket.emit("room-history", {
         messages: rooms[room].messages,
-        users: rooms[room].users
+        users: rooms[room].users,
       });
 
       // Notify others in room
       io.to(room).emit("user-joined", userInfo);
 
-      console.log(`${socket.username} (${socket.userType}) joined room ${room}`);
+      console.log(
+        `${socket.username} (${socket.userType}) joined room ${room}`
+      );
     } catch (error) {
       console.error("Error joining room:", error);
       socket.emit("error", { message: error.message });
@@ -237,7 +234,7 @@ io.on("connection", (socket) => {
         sender: socket.username,
         content: message,
         userType: socket.userType,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       // Store message in room history
@@ -248,7 +245,9 @@ io.on("connection", (socket) => {
       // Broadcast message to room
       io.to(room).emit("new-message", messageObj);
 
-      console.log(`Message from ${socket.username} in room ${room}: ${message}`);
+      console.log(
+        `Message from ${socket.username} in room ${room}: ${message}`
+      );
     } catch (error) {
       console.error("Error sending message:", error);
       socket.emit("error", { message: error.message });
@@ -263,7 +262,7 @@ io.on("connection", (socket) => {
       if (rooms[room]) {
         // Remove user from room's user list
         rooms[room].users = rooms[room].users.filter(
-          user => user.username !== socket.username
+          (user) => user.username !== socket.username
         );
 
         // Leave the socket room
@@ -272,7 +271,7 @@ io.on("connection", (socket) => {
         // Notify others
         io.to(room).emit("user-left", {
           username: socket.username,
-          userType: socket.userType
+          userType: socket.userType,
         });
 
         console.log(`${socket.username} left room ${room}`);
@@ -287,26 +286,26 @@ io.on("connection", (socket) => {
       socket.emit("error", { message: error.message });
     }
   });
-  socket.on("use-todo",({newTask,code})=>{
-    try{
-      if(!newTask || !code){
-        socket.emit("error",{message:"Error with code or task"});
+  socket.on("use-todo", ({ newTask, code }) => {
+    try {
+      if (!newTask || !code) {
+        socket.emit("error", { message: "Error with code or task" });
       }
       const todoObj = {
         content: newTask,
-        roomCode:code
-      }
+        roomCode: code,
+      };
       if (!todo[code]) {
         todo[code] = {
           messages: [],
-          users: []
+          users: [],
         };
       }
-      
+
       // Store the todo in the room
       todo[code].messages.push(todoObj);
-  
-      io.to(code).emit('use-todo', { content: todo[code].messages });
+
+      io.to(code).emit("use-todo", { content: todo[code].messages });
       console.log("Emitting use-todo event:", { content: todo[code].messages });
       console.log(todo[code]);
     } catch (err) {
@@ -317,17 +316,17 @@ io.on("connection", (socket) => {
   // Handle disconnection
   socket.on("disconnect", () => {
     console.log(`${socket.username} disconnected`);
-    
+
     // Find and leave all rooms user was in
-    Object.keys(rooms).forEach(room => {
-      if (rooms[room].users.some(user => user.username === socket.username)) {
+    Object.keys(rooms).forEach((room) => {
+      if (rooms[room].users.some((user) => user.username === socket.username)) {
         rooms[room].users = rooms[room].users.filter(
-          user => user.username !== socket.username
+          (user) => user.username !== socket.username
         );
 
         io.to(room).emit("user-left", {
           username: socket.username,
-          userType: socket.userType
+          userType: socket.userType,
         });
 
         // Clean up empty rooms
@@ -340,7 +339,7 @@ io.on("connection", (socket) => {
 });
 // Routes
 // In your POST route
-app.get('/api/todos', async (req, res) => {
+app.get("/api/todos", async (req, res) => {
   try {
     const todos = await Todo.find();
     res.json(todos);
@@ -350,7 +349,7 @@ app.get('/api/todos', async (req, res) => {
 });
 
 // POST a new todo
-app.post('/api/todos', async (req, res) => {
+app.post("/api/todos", async (req, res) => {
   const todo = new Todo({
     text: req.body.text,
     roomCode: req.body.roomCode, // Optional: if you want to associate todos with rooms
@@ -365,11 +364,11 @@ app.post('/api/todos', async (req, res) => {
 });
 
 // PUT (update) a todo's completion status
-app.put('/api/todos/:id', async (req, res) => {
+app.put("/api/todos/:id", async (req, res) => {
   try {
     const todo = await Todo.findById(req.params.id);
     if (!todo) {
-      return res.status(404).json({ message: 'Todo not found' });
+      return res.status(404).json({ message: "Todo not found" });
     }
 
     // Toggle the completed status
@@ -383,19 +382,18 @@ app.put('/api/todos/:id', async (req, res) => {
 });
 
 // DELETE a todo
-app.delete('/api/todos/:id', async (req, res) => {
+app.delete("/api/todos/:id", async (req, res) => {
   try {
     const todo = await Todo.findByIdAndDelete(req.params.id);
     if (todo) {
-      res.json({ message: 'Todo deleted' });
+      res.json({ message: "Todo deleted" });
     } else {
-      res.status(404).json({ message: 'Todo not found' });
+      res.status(404).json({ message: "Todo not found" });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
-
 
 async function main() {
   await mongoose.connect(process.env.MONGO_URL);

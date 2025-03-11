@@ -1,13 +1,11 @@
 import React from 'react';
 import { PenSquare } from 'lucide-react';
 
-
-
 const ServiceCard = ({ title, description, features, icon }) => {
   return (
     <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 animate__animated animate__fadeInUp">
       <div className="bg-[#0582CA]/10 rounded-full w-16 h-16 flex items-center justify-center mb-6">
-        {icon}
+        {icon} {/* Ensure `icon` is a valid React element */}
       </div>
       <h3 className="text-xl font-semibold text-[#0582CA] mb-3">{title}</h3>
       <p className="text-gray-600 mb-4">{description}</p>

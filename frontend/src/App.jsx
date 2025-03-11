@@ -80,9 +80,9 @@ function App() {
           <Route
             path="/creator/dashboard"
             element={
-              <ProtectedRoute1>
-                <CreatorDashboard />
-              </ProtectedRoute1>
+              // <ProtectedRoute1>
+              // </ProtectedRoute1>
+              <CreatorDashboard />
             }
           />
           <Route
