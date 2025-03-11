@@ -14,7 +14,7 @@ import BusinessOngoing from "./pages/Business/Ongoing";
 import CreatorTodo from "./pages/Creator/TodoList.jsx";
 import BusinessPosts from "./pages/Business/Posts";
 import BusinessTodo from "./pages/Business/TodoList.jsx";
-import theme from "./theme"; 
+import theme from "./theme";
 import CreatorJobs from "./pages/Creator/Jobs";
 import CreatorRequests from "./pages/Creator/Requests";
 import CreatorOngoing from "./pages/Creator/Ongoing";
@@ -66,18 +66,11 @@ function App() {
           draggable
           pauseOnHover
         />
-        
         <Routes>
-        <Route
-            path="/admin"
-            element={
-                <Admin />}
-          />
+          <Route path="/admin" element={<Admin />} />
           <Route
             path="/creator/dashboard/waiting-approval"
-            element={
-                <WaitingApproval />
-            }
+            element={<WaitingApproval />}
           />
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />({userType === "creator"}
@@ -140,7 +133,6 @@ function App() {
               </ProtectedRoute1>
             }
           />
-          
           <Route path="*" element={<div>Page Not Found</div>} />
           ) :(
           <Route path="/business/signup" element={<BusinessSignup />} />
@@ -148,9 +140,9 @@ function App() {
           <Route
             path="/business/dashboard"
             element={
-              <ProtectedRoute2>
-                <BusinessDashboard />
-              </ProtectedRoute2>
+              // <ProtectedRoute2>
+              // </ProtectedRoute2>
+              <BusinessDashboard />
             }
           />
           <Route
@@ -185,7 +177,6 @@ function App() {
               </ProtectedRoute2>
             }
           />
-          
           <Route
             path="/business/dashboard/ongoing/workspace/todo"
             element={

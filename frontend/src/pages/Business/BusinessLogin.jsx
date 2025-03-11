@@ -29,9 +29,6 @@ const BusinessLogin = () => {
       localStorage.setItem("isLogin", "true");
       localStorage.setItem("token", data.token);
       toast.success("Logged In");
-      
-      await new Promise(resolve => setTimeout(resolve, ));
-
       nav("/business/dashboard", { replace: true });
     } else {
       toast.error("Not logged In");
