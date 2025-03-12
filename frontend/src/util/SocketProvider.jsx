@@ -1,4 +1,4 @@
-import { io } from 'socket.io-client';
+import { io } from 'socket.io-client'; //Comment
 import { createContext, useEffect, useRef, useState } from 'react';
 
 export const SocketContext = createContext({ socket: null, connected: false });
@@ -15,7 +15,7 @@ export const SocketProvider = ({ children }) => {
       return;
     }
 
-    socketRef.current = io('http://localhost:3000', {
+    socketRef.current = io('https://brandboost-8v1b.onrender.com', {
       auth: { token },
       reconnection: true,
       reconnectionAttempts: 5,

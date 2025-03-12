@@ -13,7 +13,7 @@ const Jobs = () => {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("Token not found");
         const response = await fetch(
-          "http://localhost:3000/creator/dashboard/jobs",
+          "https://brandboost-8v1b.onrender.com/creator/dashboard/jobs",
           {
             method: "GET",
             headers: {
@@ -39,7 +39,7 @@ const Jobs = () => {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("Token not found");
       const response = await fetch(
-        `http://localhost:3000/creator/dashboard/jobs/apply/${jobId}`,
+        `https://brandboost-8v1b.onrender.com/creator/dashboard/jobs/apply/${jobId}`,
         {
           method: "POST",
           headers: {
