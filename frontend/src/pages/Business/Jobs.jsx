@@ -16,7 +16,7 @@ const Jobs = () => {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("Token not found");
         const response = await fetch(
-          "http://localhost:3000/business/dashboard/jobs",
+          "http://https://brandboost-8v1b.onrender.com/business/dashboard/jobs",
           {
             method: "GET",
             headers: {
@@ -40,7 +40,7 @@ const Jobs = () => {
     try {
       const roomCode = shortId.generate();
       const response = await fetch(
-        "http://localhost:3000/business/dashboard/upload",
+        "http://https://brandboost-8v1b.onrender.com/business/dashboard/upload",
         {
           method: "POST",
           headers: {
