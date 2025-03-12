@@ -3,8 +3,8 @@ import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import CreatorSignup from "./pages/Creator/CreatorSignUp";
 import CreatorLogin from "./pages/Creator/CreatorLogin";
-import CreatorDashboard from "./pages/Creator/CreatorDashboard";
-import BusinessDashboard from "./pages/Business/BusinessDashboard";
+import CreatorDashboard2 from "./pages/Creator/CreatorDashboard2";
+import BusinessDashboard2 from "./pages/Business/BusinessDashboard2";
 import BusinessSignup from "./pages/Business/BusinessSignUp";
 import BusinessLogin from "./pages/Business/BusinessLogin";
 import { useState } from "react";
@@ -82,7 +82,7 @@ function App() {
             element={
               // <ProtectedRoute1>
               // </ProtectedRoute1>
-              <CreatorDashboard />
+              <CreatorDashboard2 />
             }
           />
           <Route
@@ -142,7 +142,7 @@ function App() {
             element={
               // <ProtectedRoute2>
               // </ProtectedRoute2>
-              <BusinessDashboard />
+              <BusinessDashboard2 />
             }
           />
           <Route
