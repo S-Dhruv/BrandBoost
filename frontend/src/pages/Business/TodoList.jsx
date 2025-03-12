@@ -9,7 +9,7 @@ const TodoList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const API_URL = "http://localhost:3000/api";
+  const API_URL = "https://brandboost-8v1b.onrender.com/api";
   const nav = useNavigate();
 
   useEffect(() => {

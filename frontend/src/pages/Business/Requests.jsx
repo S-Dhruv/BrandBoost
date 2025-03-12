@@ -29,7 +29,7 @@ const Requests = () => {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("Token not found");
         const response = await fetch(
-          "http://localhost:3000/business/dashboard/requests",
+          "https://brandboost-8v1b.onrender.com/business/dashboard/requests",
           {
             method: "GET",
             headers: {
@@ -54,7 +54,7 @@ const Requests = () => {
       setError((prev) => ({ ...prev, [jobId]: null }));
 
       const response = await fetch(
-        `http://localhost:3000/business/dashboard/requests/${jobId}`,
+        `https://brandboost-8v1b.onrender.com/business/dashboard/requests/${jobId}`,
         {
           method: "GET",
           headers: {
@@ -82,7 +82,7 @@ const Requests = () => {
   const handleApproveApplicant = async (jobId, applicantId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/business/dashboard/requests/${jobId}/approve`,
+        `https://brandboost-8v1b.onrender.com/business/dashboard/requests/${jobId}/approve`,
         {
           method: "POST",
           headers: {

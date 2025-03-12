@@ -30,7 +30,7 @@ const CreatorSignUp = () => {
     console.log("Email:", email);
     console.log("Phone:", phone);
     try{
-      const response = await fetch("http://localhost:3000/creator/signup", {
+      const response = await fetch("https://brandboost-8v1b.onrender.com/creator/signup", {
         method:"POST",
         headers: {
           "Content-Type": "application/json",
