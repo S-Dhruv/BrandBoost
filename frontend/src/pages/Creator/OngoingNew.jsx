@@ -9,7 +9,7 @@ const OngoingNew = () => {
     const fetchOngoingJobs = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/creator/dashboard/ongoing",
+          "https://brandboost-8v1b.onrender.com/creator/dashboard/ongoing",
           {
             method: "GET",
             headers: {
