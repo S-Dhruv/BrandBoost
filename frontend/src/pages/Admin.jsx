@@ -14,7 +14,7 @@ const Admin = () => {
         return;
       }
 
-      const response = await fetch(`http://https://brandboost-8v1b.onrender.com/admin/approve/`, {
+      const response = await fetch(`https://brandboost-8v1b.onrender.com/admin/approve/`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
@@ -37,7 +37,7 @@ const Admin = () => {
         return;
       }
 
-      const response = await fetch(`http://https://brandboost-8v1b.onrender.com/admin/approve/`, {
+      const response = await fetch(`https://brandboost-8v1b.onrender.com/admin/approve/`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",

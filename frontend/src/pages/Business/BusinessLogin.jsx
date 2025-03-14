@@ -14,7 +14,7 @@ const BusinessLogin = () => {
     const email = emailRef.current.value;
     const password = passRef.current.value;
 
-    const response = await fetch("http://https://brandboost-8v1b.onrender.com/business/login", {
+    const response = await fetch("https://brandboost-8v1b.onrender.com/business/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -36,7 +36,7 @@ const BusinessLogin = () => {
       console.error("Login failed:", data.message);
     }
     try {
-      const response = await fetch("http://https://brandboost-8v1b.onrender.com/business/login", {
+      const response = await fetch("https://brandboost-8v1b.onrender.com/business/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -5,7 +5,7 @@ const Ongoing = () => {
   useEffect(() => {
     const fetchOngoingJobs = async () => {
       const response = await fetch(
-        "http://https://brandboost-8v1b.onrender.com/business/dashboard/ongoing",
+        "https://brandboost-8v1b.onrender.com/business/dashboard/ongoing",
         {
           method: "GET",
           headers: {
