@@ -13,7 +13,7 @@ const CreatorLogin = () => {
     const password = passRef.current.value;
   
     try {
-      const response = await fetch("https://brandboost-8v1b.onrender.com/creator/login", {
+      const response = await fetch("http://localhost:3000/creator/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

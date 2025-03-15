@@ -9,7 +9,7 @@ const WaitingApproval = () => {
     const check = async () => {
         setIsChecking(true);
         try {
-            const response = await fetch("https://brandboost-8v1b.onrender.com/admin/waiting", {
+            const response = await fetch("http://localhost:3000/admin/waiting", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
