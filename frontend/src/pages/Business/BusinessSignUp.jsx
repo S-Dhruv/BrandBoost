@@ -31,7 +31,7 @@ const BusinessSignUp = () => {
     setErrorMessage("");
     
     try{
-    const response = await fetch("http://https://brandboost-8v1b.onrender.com/business/signup", {
+    const response = await fetch("http://localhost:3000/business/signup", {
       method:"POST",
       headers: {
         "Content-Type": "application/json",

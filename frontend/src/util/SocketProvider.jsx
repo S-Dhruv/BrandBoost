@@ -15,7 +15,7 @@ export const SocketProvider = ({ children }) => {
       return;
     }
 
-    socketRef.current = io('https://brandboost-8v1b.onrender.com', {
+    socketRef.current = io('http://localhost:3000', {
       auth: { token },
       reconnection: true,
       reconnectionAttempts: 5,
